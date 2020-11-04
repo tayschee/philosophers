@@ -27,14 +27,18 @@ void		*sophos_is_alive(void *sophos_point)
 		{
 			if (sophos->eat_max != -1 && !sophos->eat_max)
 				i++;
+			//pthread_mutex_lock(&g_mutex);
 			if (is_die(sophos->last_meal) < 0 || (i == g_number_of_sophos
 			&& g_eat_max != -1))
 			{
-				pthread_mutex_lock(&g_mutex);
-					if (is_die(sophos->last_meal) < 0)
-				sophos_activity(sophos->number, "died\n");
+				write_ok = 0;
+				if (!(i == g_number_of_sophos && g_eat_max != -1))
+					sophos_activity(sophos->number, "died\n", 1);
+				else
+					sophos_activity(sophos->number, "other\n", 1);
 				return (NULL);
 			}
+			//pthread_mutex_unlock(&g_mutex);
 			sophos = sophos->next;
 		}
 		sophos = save;
@@ -49,7 +53,7 @@ void		put_fork_on_table(t_sophos *sophos)
 	
 	i = 0;
 	if (!(fork = malloc(sizeof(int) * g_number_of_sophos))) // - 1
-		exit(1); // fct_free
+		free_fct(&sophos, NULL, 1); // fct_free
 	while (i < g_number_of_sophos)
 		fork[i++] = 1;
 	i = 0;

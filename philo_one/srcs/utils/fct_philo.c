@@ -22,16 +22,19 @@ suseconds_t	is_die(t_val last_meal)
 
 }
 
-void		sophos_activity(int nb, char *txt)
+void		sophos_activity(int nb, char *txt, int f)
 {
 	t_val timer;
 
-	timer = time_past(g_begin);
-	ft_putnbr((int)convert_sec_to_usec(timer.tv_sec, timer.tv_usec));
-	ft_putstr(" ");
-	ft_putnbr(nb);
-	ft_putstr(" ");
-	ft_putstr(txt);
+	if (write_ok || f)
+	{
+		timer = time_past(g_begin);
+		ft_putnbr((int)convert_sec_to_usec(timer.tv_sec, timer.tv_usec));
+		ft_putstr(" ");
+		ft_putnbr(nb);
+		ft_putstr(" ");
+		ft_putstr(txt);
+	}
 }
 
 int				check_argv(int argc, char **argv)

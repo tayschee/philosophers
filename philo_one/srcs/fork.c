@@ -12,33 +12,35 @@
 
 #include "philo.h"
 
-void		take_fork(t_sophos *sophos, int put_or_take)
+void		take_fork(t_sophos *sophos)
 {
-		if (put_or_take < 0)
+		pthread_mutex_lock(&g_mutex);
+		if ((*(sophos->f_right) && *(sophos->f_left))|| sophos->hand == 1)
 		{
-			pthread_mutex_lock(&g_mutex);
-			if (*(sophos->f_right) && (*(sophos->f_left) || sophos->hand == 1))
-			{
-				*(sophos->f_right) += put_or_take;
-				sophos_activity(sophos->number, "has taken a fork\n");
-				sophos->hand -= put_or_take;
-			}
-			//pthread_mutex_unlock(&g_mutex);
-			//pthread_mutex_lock(&g_mutex);
-			if (*(sophos->f_left) && (*(sophos->f_right) || sophos->hand == 1))
-			{
-				*(sophos->f_left) += put_or_take;
-				sophos_activity(sophos->number, "has taken a fork\n");
-				sophos->hand -= put_or_take;
-			}
+			*(sophos->f_right) -= 1;
+			sophos_activity(sophos->number, "has taken a fork\n");
 			pthread_mutex_unlock(&g_mutex);
+			sophos->hand += 1;
 		}
 		else
-		{
-			sophos->hand -= 2 * put_or_take;
-			pthread_mutex_lock(&g_mutex);
-			*(sophos->f_right) += put_or_take;
-			*(sophos->f_left) += put_or_take;
 			pthread_mutex_unlock(&g_mutex);
+		pthread_mutex_lock(&g_mutex);
+		if ((*(sophos->f_left) && *(sophos->f_right))|| sophos->hand == 1)
+		{
+			*(sophos->f_left) -= 1;
+			sophos_activity(sophos->number, "has taken a fork\n");
+			pthread_mutex_unlock(&g_mutex);
+			sophos->hand += 1;
 		}
+		else
+			pthread_mutex_unlock(&g_mutex);
+}
+
+void		put_fork(t_sophos *sophos)
+{
+	sophos->hand -= 2;
+	pthread_mutex_lock(&g_mutex);
+	*(sophos->f_right) += 1;
+	*(sophos->f_left) += 1;
+	pthread_mutex_unlock(&g_mutex);
 }
