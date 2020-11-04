@@ -24,7 +24,7 @@ clean :
 	rm -rf $(OBJS)
 
 fclean : clean
-	rm -rf $(EXEC)
+	rm -rf $(EXEC) $(LIB)
 
 re : fclean all
 

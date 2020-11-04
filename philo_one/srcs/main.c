@@ -40,8 +40,8 @@ void	*eat(void *sophos_pointer)
 		{
 			pthread_mutex_lock(&g_mutex);
 			sophos_activity(sophos->number, "is eating\n");
-			gettimeofday(&sophos->last_meal, NULL);
 			pthread_mutex_unlock(&g_mutex);
+			gettimeofday(&sophos->last_meal, NULL);
 			usleep(g_time_to_eat * 1000);
 			put_fork(sophos);
 			if (sophos->eat_max != -1 && --sophos->eat_max == 0)

@@ -69,16 +69,12 @@ t_val	time_past(t_val begin_timer)
 	t_val	now;
 
 	gettimeofday(&now, 0);
-	//printf("now : %ld %d\n", now.tv_sec, now.tv_usec);
 	now.tv_sec = now.tv_sec - begin_timer.tv_sec;
 	now.tv_usec = (int)(now.tv_usec - begin_timer.tv_usec);
 	if (now.tv_usec < 0)
 	{
-		//printf("%d\n", now.tv_usec);
 		now.tv_usec = 1000000 + now.tv_usec;
-		//printf("%d\n", now.tv_usec);
 		now.tv_sec -= 1;
 	}
-	//printf("now2 : %ld %d\n", now.tv_sec, now.tv_usec);
 	return (now);
 }

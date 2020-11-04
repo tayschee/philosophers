@@ -12,6 +12,22 @@
 
 #include "philo.h"
 
+/*void		take_fork(t_sophos *sophos)
+{
+		pthread_mutex_lock(&g_mutex);
+		if (*(sophos->f_right) && *(sophos->f_left))
+		{
+			*(sophos->f_right) -= 1;
+			sophos_activity(sophos->number, "has taken a fork\n");
+			*(sophos->f_left) -= 1;
+			sophos_activity(sophos->number, "has taken a fork\n");
+			pthread_mutex_unlock(&g_mutex);
+			sophos->hand += 2;
+		}
+		else
+			pthread_mutex_unlock(&g_mutex);
+}*/
+
 void		take_fork(t_sophos *sophos)
 {
 		pthread_mutex_lock(&g_mutex);
@@ -26,7 +42,7 @@ void		take_fork(t_sophos *sophos)
 		else
 			pthread_mutex_unlock(&g_mutex);
 		pthread_mutex_lock(&g_mutex);
-		if ((*(sophos->f_left) && *(sophos->f_right))||
+		if ((*(sophos->f_left) && *(sophos->f_right)) ||
 		(sophos->hand == 1 && *(sophos->f_left)))
 		{
 			*(sophos->f_left) -= 1;

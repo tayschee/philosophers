@@ -43,7 +43,6 @@ pthread_mutex_t	g_mutex;
 
 t_val			time_past(t_val begin_timer);
 int				convert_sec_to_msec(time_t sec, suseconds_t usec);
-//int				tab_to_usec(char *arg);
 int				is_die(t_val last_meal);
 
 int				ft_atoi(const char *str);
