@@ -11,14 +11,14 @@ SRCS = $(addprefix $(SRCSDIR), $(SRCSFILE))
 OBJS = $(SRCS:.c=.o)
 
 CC = gcc -I./
-#CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 all : $(EXEC)
 
 $(EXEC) : $(OBJS)
 	ar rc $(LIB) $(OBJS)
 	ranlib $(LIB)
-	gcc -o $(EXEC) $(OBJS) -pthread -L$(LIB)
+	gcc -o $(EXEC) $(OBJS) -pthread -L./
 
 clean :
 	rm -rf $(OBJS)

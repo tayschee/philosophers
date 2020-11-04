@@ -12,54 +12,47 @@
 
 #include "philo.h"
 
-static int		sophos_think(t_sophos *sophos, int thought)
+static void		sophos_think(t_sophos *sophos)
 {
-	if (!thought)
-	{
-		pthread_mutex_lock(&g_mutex);
-		sophos_activity(sophos->number, "is thinking\n");
-		pthread_mutex_unlock(&g_mutex);
-	}
-	return (1);
+	pthread_mutex_lock(&g_mutex);
+	sophos_activity(sophos->number, "is thinking\n");
+	pthread_mutex_unlock(&g_mutex);
 }
 
-static int		sophos_sleep(t_sophos *sophos)
+static void		sophos_sleep(t_sophos *sophos)
 {
 	pthread_mutex_lock(&g_mutex);
 	sophos_activity(sophos->number, "is sleeping\n");
 	pthread_mutex_unlock(&g_mutex);
 	usleep(g_time_to_sleep);
-	return (0);
+	sophos_think(sophos);
 }
 
 void	*eat(void *sophos_pointer)
 {
 	t_sophos	*sophos;
-	int			thought;
 	
 	sophos = (t_sophos *)sophos_pointer;
-	thought = 0;
 	while (1)
 	{
-		thought = sophos_think(sophos, thought);
 		take_fork(sophos, -1);
 		if (sophos->hand == 2)
 		{
 			pthread_mutex_lock(&g_mutex);
 			sophos_activity(sophos->number, "is eating\n");
 			pthread_mutex_unlock(&g_mutex);
+			gettimeofday(&sophos->last_meal, NULL);
 			usleep(g_time_to_eat);
 			take_fork(sophos, 1);
-			gettimeofday(&sophos->last_meal, NULL);
 			if (sophos->eat_max != -1 && --sophos->eat_max == 0)
 				return (NULL);
-			thought = sophos_sleep(sophos);
+			sophos_sleep(sophos);
 		}
 	}
 	return NULL;
 }
 
-static int launch_thread(t_sophos *sophos, char **argv)
+static int launch_thread(t_sophos *sophos)
 {
 	int			i;
 	int			ret;
@@ -74,11 +67,11 @@ static int launch_thread(t_sophos *sophos, char **argv)
 	while(++i < g_number_of_sophos)
 	{
 		gettimeofday(&sophos->last_meal, NULL);
-		if (ret = pthread_create(&tid[i], NULL, eat, (void *)sophos))
+		if ((ret = pthread_create(&tid[i], NULL, eat, (void *)sophos)))
 			exit(free_fct(&sophos, tid, 1));
 		sophos = sophos->next;
 	}
-	if (ret = pthread_create(&tid[i], NULL, sophos_is_alive, (void *)save))
+	if ((ret = pthread_create(&tid[i], NULL, sophos_is_alive, (void *)save)))
 		exit(free_fct(&sophos, tid, 1));
 	pthread_join(tid[i], NULL);
 	while(--i >= 0)
@@ -102,7 +95,7 @@ int main(int argc, char **argv)
 	pthread_mutex_init(&g_mutex, NULL);
 	sophos = sophos_sit_down(1, g_number_of_sophos);
 	put_fork_on_table(sophos);
-	ret = launch_thread(sophos, argv);
+	ret = launch_thread(sophos);
 	free_fct(&sophos, NULL, 0);
 	pthread_mutex_destroy(&g_mutex);
 	return (ret);

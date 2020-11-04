@@ -17,6 +17,7 @@ suseconds_t	is_die(t_val last_meal)
 	t_val timer;
 
 	timer = time_past(last_meal);
+	//printf("%d\n", g_time_to_die - convert_sec_to_usec(timer.tv_sec, timer.tv_usec));
 	return (g_time_to_die - convert_sec_to_usec(timer.tv_sec, timer.tv_usec));
 
 }

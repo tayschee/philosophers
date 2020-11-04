@@ -23,8 +23,8 @@ void		take_fork(t_sophos *sophos, int put_or_take)
 				sophos_activity(sophos->number, "has taken a fork\n");
 				sophos->hand -= put_or_take;
 			}
-			pthread_mutex_unlock(&g_mutex);
-			pthread_mutex_lock(&g_mutex);
+			//pthread_mutex_unlock(&g_mutex);
+			//pthread_mutex_lock(&g_mutex);
 			if (*(sophos->f_left) && (*(sophos->f_right) || sophos->hand == 1))
 			{
 				*(sophos->f_left) += put_or_take;

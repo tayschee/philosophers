@@ -17,6 +17,7 @@
 # include <pthread.h>
 # include <unistd.h>
 # include <stdlib.h>
+#include <stdio.h> //enleve 
 
 typedef struct timeval t_val;
 

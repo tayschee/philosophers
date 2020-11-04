@@ -48,9 +48,9 @@ void		put_fork_on_table(t_sophos *sophos)
 	int			*fork;
 	
 	i = 0;
-	if (!(fork = malloc(sizeof(int) * g_number_of_sophos - 1)))
+	if (!(fork = malloc(sizeof(int) * g_number_of_sophos))) // - 1
 		exit(1); // fct_free
-	while (fork[i] < g_number_of_sophos)
+	while (i < g_number_of_sophos)
 		fork[i++] = 1;
 	i = 0;
 	while (sophos)
