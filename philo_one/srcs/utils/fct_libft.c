@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 13:38:51 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/03 16:45:51 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/04 19:38:02 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int		ft_strlen(char *txt)
 	int	i;
 
 	i = 0;
-	while(txt && txt[i])
+	while (txt && txt[i])
 		i++;
 	return (i);
 }
