@@ -15,20 +15,22 @@
 void		take_fork(t_sophos *sophos)
 {
 		pthread_mutex_lock(&g_mutex);
-		if ((*(sophos->f_right) && *(sophos->f_left))|| sophos->hand == 1)
+		if ((*(sophos->f_right) && *(sophos->f_left)) ||
+		(sophos->hand == 1 && *(sophos->f_right)))
 		{
 			*(sophos->f_right) -= 1;
-			sophos_activity(sophos->number, "has taken a fork\n", 0);
+			sophos_activity(sophos->number, "has taken a fork\n");
 			pthread_mutex_unlock(&g_mutex);
 			sophos->hand += 1;
 		}
 		else
 			pthread_mutex_unlock(&g_mutex);
 		pthread_mutex_lock(&g_mutex);
-		if ((*(sophos->f_left) && *(sophos->f_right))|| sophos->hand == 1)
+		if ((*(sophos->f_left) && *(sophos->f_right))||
+		(sophos->hand == 1 && *(sophos->f_left)))
 		{
 			*(sophos->f_left) -= 1;
-			sophos_activity(sophos->number, "has taken a fork\n", 0);
+			sophos_activity(sophos->number, "has taken a fork\n");
 			pthread_mutex_unlock(&g_mutex);
 			sophos->hand += 1;
 		}

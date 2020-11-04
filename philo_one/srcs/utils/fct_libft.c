@@ -12,9 +12,9 @@
 
 #include "philo.h"
 
-suseconds_t		ft_atosu(const char *str)
+int		ft_atoi(const char *str)
 {
-	suseconds_t	i;
+	int			i;
 	int			sign;
 	int			value;
 
@@ -56,10 +56,10 @@ void	ft_putstr(char *txt)
 	write(1, txt, ft_strlen(txt));
 }
 
-void	ft_putnbr(long int n)
+void	ft_putnbr(int n)
 {
-	char			txt;
-	long long int	nb;
+	char		txt;
+	long int	nb;
 
 	nb = n;
 	if (nb < 0)

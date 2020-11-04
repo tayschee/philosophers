@@ -27,21 +27,21 @@ void		*sophos_is_alive(void *sophos_point)
 		{
 			if (sophos->eat_max != -1 && !sophos->eat_max)
 				i++;
-			//pthread_mutex_lock(&g_mutex);
+			pthread_mutex_lock(&g_mutex);
 			if (is_die(sophos->last_meal) < 0 || (i == g_number_of_sophos
 			&& g_eat_max != -1))
 			{
-				write_ok = 0;
 				if (!(i == g_number_of_sophos && g_eat_max != -1))
-					sophos_activity(sophos->number, "died\n", 1);
+					sophos_activity(sophos->number, "died\n");
 				else
-					sophos_activity(sophos->number, "other\n", 1);
+					sophos_activity(sophos->number, "other\n");
 				return (NULL);
 			}
-			//pthread_mutex_unlock(&g_mutex);
+			pthread_mutex_unlock(&g_mutex);
 			sophos = sophos->next;
 		}
 		sophos = save;
+		//sleep(10);
 	}
 	return (NULL);
 }

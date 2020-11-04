@@ -15,16 +15,16 @@
 static void		sophos_think(t_sophos *sophos)
 {
 	pthread_mutex_lock(&g_mutex);
-	sophos_activity(sophos->number, "is thinking\n", 0);
+	sophos_activity(sophos->number, "is thinking\n");
 	pthread_mutex_unlock(&g_mutex);
 }
 
 static void		sophos_sleep(t_sophos *sophos)
 {
 	pthread_mutex_lock(&g_mutex);
-	sophos_activity(sophos->number, "is sleeping\n", 0);
+	sophos_activity(sophos->number, "is sleeping\n");
 	pthread_mutex_unlock(&g_mutex);
-	usleep(g_time_to_sleep);
+	usleep(g_time_to_sleep * 1000);
 	sophos_think(sophos);
 }
 
@@ -39,10 +39,10 @@ void	*eat(void *sophos_pointer)
 		if (sophos->hand == 2)
 		{
 			pthread_mutex_lock(&g_mutex);
-			sophos_activity(sophos->number, "is eating\n", 0);
-			pthread_mutex_unlock(&g_mutex);
+			sophos_activity(sophos->number, "is eating\n");
 			gettimeofday(&sophos->last_meal, NULL);
-			usleep(g_time_to_eat);
+			pthread_mutex_unlock(&g_mutex);
+			usleep(g_time_to_eat * 1000);
 			put_fork(sophos);
 			if (sophos->eat_max != -1 && --sophos->eat_max == 0)
 				return (NULL);
@@ -85,8 +85,7 @@ int main(int argc, char **argv)
 	t_sophos		*sophos;
 	int				ret;
 
-	ret = 1;
-	write_ok = 1;
+	ret = 0;
 	if (check_argv(argc, argv))
 	{
 		ft_putstr("Les philosophes ne peuvent pas se reunir\n");

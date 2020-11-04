@@ -32,23 +32,22 @@ typedef struct		s_sophos
 	struct s_sophos	*next;
 }					t_sophos;
 
-int				write_ok;
 t_val			g_begin;
 int				g_number_of_sophos;
-suseconds_t		g_time_to_die;
-suseconds_t		g_time_to_eat;
-suseconds_t		g_time_to_sleep;
-suseconds_t		g_eat_max;
+int				g_time_to_die;
+int				g_time_to_eat;
+int				g_time_to_sleep;
+int				g_eat_max;
 
 pthread_mutex_t	g_mutex;
 
 t_val			time_past(t_val begin_timer);
-suseconds_t		convert_sec_to_usec(time_t sec, suseconds_t usec);
-suseconds_t		tab_to_usec(char *arg);
-suseconds_t		is_die(t_val last_meal);
+int				convert_sec_to_msec(time_t sec, suseconds_t usec);
+//int				tab_to_usec(char *arg);
+int				is_die(t_val last_meal);
 
-suseconds_t		ft_atosu(const char *str);
-void			ft_putnbr(long int n);
+int				ft_atoi(const char *str);
+void			ft_putnbr(int n);
 int				ft_strlen(char *txt);
 void			ft_putstr(char *txt);
 
@@ -56,7 +55,7 @@ t_sophos		*sophos_sit_down(int i, int nb_sophos);
 int				check_argv(int argc, char **argv);
 void			put_fork_on_table(t_sophos *sophos);
 void			*eat(void *sophos);
-void			sophos_activity(int nb, char *txt, int f);
+void			sophos_activity(int nb, char *txt);
 void			take_fork(t_sophos *sophos);
 void			put_fork(t_sophos *sophos);
 void			*sophos_is_alive(void *sophos_point);
