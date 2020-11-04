@@ -18,7 +18,7 @@ void		take_fork(t_sophos *sophos)
 		if ((*(sophos->f_right) && *(sophos->f_left))|| sophos->hand == 1)
 		{
 			*(sophos->f_right) -= 1;
-			sophos_activity(sophos->number, "has taken a fork\n");
+			sophos_activity(sophos->number, "has taken a fork\n", 0);
 			pthread_mutex_unlock(&g_mutex);
 			sophos->hand += 1;
 		}
@@ -28,7 +28,7 @@ void		take_fork(t_sophos *sophos)
 		if ((*(sophos->f_left) && *(sophos->f_right))|| sophos->hand == 1)
 		{
 			*(sophos->f_left) -= 1;
-			sophos_activity(sophos->number, "has taken a fork\n");
+			sophos_activity(sophos->number, "has taken a fork\n", 0);
 			pthread_mutex_unlock(&g_mutex);
 			sophos->hand += 1;
 		}
