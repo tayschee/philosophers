@@ -6,15 +6,15 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 13:38:51 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/03 16:45:51 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/04 19:38:02 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-suseconds_t		ft_atosu(const char *str)
+int		ft_atoi(const char *str)
 {
-	suseconds_t	i;
+	int			i;
 	int			sign;
 	int			value;
 
@@ -46,7 +46,7 @@ int		ft_strlen(char *txt)
 	int	i;
 
 	i = 0;
-	while(txt && txt[i])
+	while (txt && txt[i])
 		i++;
 	return (i);
 }
@@ -56,10 +56,10 @@ void	ft_putstr(char *txt)
 	write(1, txt, ft_strlen(txt));
 }
 
-void	ft_putnbr(long int n)
+void	ft_putnbr(int n)
 {
-	char			txt;
-	long long int	nb;
+	char		txt;
+	long int	nb;
 
 	nb = n;
 	if (nb < 0)

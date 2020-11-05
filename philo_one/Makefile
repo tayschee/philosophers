@@ -11,7 +11,7 @@ SRCS = $(addprefix $(SRCSDIR), $(SRCSFILE))
 OBJS = $(SRCS:.c=.o)
 
 CC = gcc -I./
-CFLAGS = -Wall -Wextra -Werror
+#CFLAGS = -Wall -Wextra -Werror
 
 all : $(EXEC)
 
@@ -24,7 +24,7 @@ clean :
 	rm -rf $(OBJS)
 
 fclean : clean
-	rm -rf $(EXEC)
+	rm -rf $(EXEC) $(LIB)
 
 re : fclean all
 

@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 14:37:40 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/03 16:35:05 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/04 19:42:37 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,13 @@ int	free_fct(t_sophos **sophos, pthread_t *tid, int i)
 			last = last->next;
 		}
 		if (before)
-		{
-			free(last);
 			before->next = NULL;
-		}
-		else
+		if (!before)
 		{
 			free(last->f_right);
-			free(last);
 			*sophos = NULL;
 		}
+		free(last);
 		last = *sophos;
 	}
 	return (i);
