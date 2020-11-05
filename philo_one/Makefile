@@ -11,7 +11,7 @@ SRCS = $(addprefix $(SRCSDIR), $(SRCSFILE))
 OBJS = $(SRCS:.c=.o)
 
 CC = gcc -I./
-#CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 all : $(EXEC)
 
