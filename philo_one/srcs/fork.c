@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 13:34:46 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/07 21:27:17 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/07 22:37:39 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void		take_fork(t_sophos *sophos)
 {
-
 	pthread_mutex_lock(&g_mutex);
 	if ((*(sophos->f_right) && *(sophos->f_left)))
 	{

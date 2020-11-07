@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 13:38:35 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/07 20:56:20 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/07 22:57:46 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ void	sophos_activity(int nb, char *txt, int f, int f2)
 	if (!f)
 		return ;
 	if (f2)
-		sem_wait(g_protect);
+		sem_wait(g_safe);
 	timer = time_past(g_begin);
 	ft_putnbr(convert_sec_to_msec(timer.tv_sec, timer.tv_usec));
 	ft_putstr(" ");
 	ft_putnbr(nb);
 	ft_putstr(txt);
 	if (f2)
-		sem_post(g_protect);
+		sem_post(g_safe);
 }
 
 int		check_argv(int argc, char **argv)
@@ -45,9 +45,9 @@ int		check_argv(int argc, char **argv)
 		return (1);
 	if ((g_time_to_die = ft_atoi(argv[2])) <= 0)
 		return (1);
-	if ((g_time_to_eat = ft_atoi(argv[3])) < 0)
+	if ((g_time_to_eat = ft_atoi(argv[3])) < 0 && g_time_to_eat > 2147483)
 		return (1);
-	if ((g_time_to_sleep = ft_atoi(argv[4])) < 0)
+	if ((g_time_to_sleep = ft_atoi(argv[4])) < 0 && g_time_to_sleep > 2147483)
 		return (1);
 	if (argc == 6)
 	{

@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 13:38:35 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/05 15:34:18 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/07 22:43:08 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ int		check_argv(int argc, char **argv)
 {
 	if (argc < 5 || argc > 6)
 		return (1);
-	if ((g_number_of_sophos = (int)ft_atoi(argv[1])) < 2)
+	if ((g_number_of_sophos = ft_atoi(argv[1])) < 2)
 		return (1);
 	if ((g_time_to_die = ft_atoi(argv[2])) <= 0)
 		return (1);
-	if ((g_time_to_eat = ft_atoi(argv[3])) < 0)
+	if ((g_time_to_eat = ft_atoi(argv[3])) < 0 && g_time_to_eat > 2147483)
 		return (1);
-	if ((g_time_to_sleep = ft_atoi(argv[4])) < 0)
+	if ((g_time_to_sleep = ft_atoi(argv[4])) < 0 && g_time_to_sleep > 2147483)
 		return (1);
 	if (argc == 6)
 	{
