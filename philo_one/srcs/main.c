@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/05 15:52:35 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/07 21:31:56 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,10 @@ void	*eat(void *sophos_pointer)
 		take_fork(sophos);
 		if (sophos->hand == 2)
 		{
-			sophos_activity(sophos->number, " is eating\n", g_sophos_die);
+			pthread_mutex_lock(&g_mutex);
 			gettimeofday(&sophos->last_meal, NULL);
+			pthread_mutex_unlock(&g_mutex);
+			sophos_activity(sophos->number, " is eating\n", g_sophos_die);
 			usleep(g_time_to_eat * 1000);
 			put_fork(sophos);
 			if (sophos->eat_max != -1 && --sophos->eat_max == 0)
