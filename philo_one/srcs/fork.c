@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 13:34:46 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/05 12:44:37 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/05 16:05:57 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void		take_fork(t_sophos *sophos)
 	(sophos->hand == 1 && *(sophos->f_right)))
 	{
 		*(sophos->f_right) -= 1;
-		sophos_activity(sophos->number, "has taken a fork\n", g_sophos_die);
 		pthread_mutex_unlock(&g_mutex);
+		sophos_activity(sophos->number, " has taken a fork\n", g_sophos_die);
 		sophos->hand += 1;
 	}
 	else
@@ -30,8 +30,8 @@ void		take_fork(t_sophos *sophos)
 	(sophos->hand == 1 && *(sophos->f_left)))
 	{
 		*(sophos->f_left) -= 1;
-		sophos_activity(sophos->number, "has taken a fork\n", g_sophos_die);
 		pthread_mutex_unlock(&g_mutex);
+		sophos_activity(sophos->number, " has taken a fork\n", g_sophos_die);
 		sophos->hand += 1;
 	}
 	else

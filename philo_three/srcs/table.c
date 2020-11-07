@@ -6,64 +6,37 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 14:17:21 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/07 21:00:09 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/07 20:55:32 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void		*sophos_is_alive(void *sophos_point)
+void			*sophos_is_alive(void *sophos_point)
 {
 	t_sophos	*sophos;
-	int			i;
 
 	sophos = sophos_point;
-	while (sophos)
+	while (g_sophos_die)
 	{
-		i = 0;
-		while (sophos)
+		sem_wait(g_protect);
+		if (is_die(sophos->last_meal) < 0 || sophos->eat_max == 0)
 		{
-			i += sophos->eat_max != -1 && !sophos->eat_max ? 1 : 0;
-			//pthread_mutex_lock(&g_mutex);
-			if (is_die(sophos->last_meal) < 0 || (i == g_number_of_sophos))
+			g_sophos_die = 0;
+			if (sophos->eat_max)
 			{
-				g_sophos_die = 0;
-				if (!(i == g_number_of_sophos && g_eat_max != -1))
-					sophos_activity(sophos->number, " died\n", 1);
-				return (NULL);
+				sophos_activity(sophos->number, " died\n", 1, 0);
+				exit(1);
 			}
-			//pthread_mutex_unlock(&g_mutex);
-			sophos = sophos->next;
+			sem_post(g_protect);
+			return (NULL);
 		}
-		sophos = sophos_point;
-		usleep(1000);
+		sem_post(g_protect);
 	}
 	return (NULL);
 }
 
-void		put_fork_on_table(t_sophos *sophos)
-{
-	int			i;
-	int			*fork;
-
-	i = 0;
-	if (!(fork = malloc(sizeof(int) * g_number_of_sophos)))
-		free_fct(&sophos, NULL, 1);
-	while (i < g_number_of_sophos)
-		fork[i++] = 1;
-	i = 0;
-	while (sophos)
-	{
-		if (i == 0)
-			sophos->f_left = &fork[g_number_of_sophos - 1];
-		else
-			sophos->f_left = &fork[i - 1];
-		sophos->f_right = &fork[i++];
-		sophos = sophos->next;
-	}
-}
-
-t_sophos	*sophos_sit_down(int i, int nb)
+t_sophos		*sophos_sit_down(int i, int nb)
 {
 	t_sophos	*sophos;
 
@@ -71,8 +44,6 @@ t_sophos	*sophos_sit_down(int i, int nb)
 		return (NULL);
 	sophos->number = i;
 	sophos->eat_max = g_eat_max;
-	sophos->f_right = NULL;
-	sophos->f_left = NULL;
 	sophos->hand = 0;
 	sophos->next = sophos_sit_down(++i, nb);
 	return (sophos);

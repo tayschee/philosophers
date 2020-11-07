@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:49 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/05 15:41:36 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/07 21:01:16 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <stdlib.h>
 # include <semaphore.h>
 # include <fcntl.h>
-# include <stdio.h> //a enlever
 
 typedef struct timeval	t_val;
 
@@ -30,7 +29,7 @@ typedef struct			s_sophos
 	t_val				last_meal;
 	int					hand;
 	struct s_sophos		*next;
-}					t_sophos;
+}						t_sophos;
 
 t_val					g_begin;
 int						g_sophos_die;

@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 13:38:35 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/05 15:34:18 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/07 20:56:20 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,33 +20,21 @@ int		is_die(t_val last_meal)
 	return (g_time_to_die - convert_sec_to_msec(timer.tv_sec, timer.tv_usec));
 }
 
-void	sophos_activity(int nb, char *txt, int f)
+void	sophos_activity(int nb, char *txt, int f, int f2)
 {
 	t_val	timer;
-	char	*sophos_nb;
-	char	*nb_timer;
-	char	*join;
 
-	if (f)
-	{
-		timer = time_past(g_begin);
-		nb_timer = ft_itoa(convert_sec_to_msec(timer.tv_sec, timer.tv_usec));
-		join = ft_strjoin(nb_timer, " ");
-		if (nb_timer)
-			free(nb_timer);
-		sophos_nb = ft_itoa(nb);
-		nb_timer = ft_strjoin(join, sophos_nb);
-		if (join)
-			free(join);
-		if (sophos_nb)
-			free(sophos_nb);
-		join = ft_strjoin(nb_timer, txt);
-		if (join)
-		{
-			ft_putstr(join);
-			free(join);
-		}
-	}
+	if (!f)
+		return ;
+	if (f2)
+		sem_wait(g_protect);
+	timer = time_past(g_begin);
+	ft_putnbr(convert_sec_to_msec(timer.tv_sec, timer.tv_usec));
+	ft_putstr(" ");
+	ft_putnbr(nb);
+	ft_putstr(txt);
+	if (f2)
+		sem_post(g_protect);
 }
 
 int		check_argv(int argc, char **argv)

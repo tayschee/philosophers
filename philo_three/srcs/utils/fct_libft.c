@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 13:38:51 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/05 15:41:40 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/06 17:27:34 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,29 +56,27 @@ void	ft_putstr(char *txt)
 	write(1, txt, ft_strlen(txt));
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+void	ft_putnbr(int n)
 {
-	char	*tab;
-	int		i;
-	int		j;
-	int		size;
+	char		txt;
+	long int	nb;
 
-	i = 0;
-	j = 0;
-	if (!s1 && !s2)
-		return (NULL);
-	size = ft_strlen(s1) + ft_strlen(s2);
-	if (!(tab = ft_calloc((size + 1), sizeof(char))))
-		return (NULL);
-	while (s1 && s1[j])
+	nb = n;
+	if (nb < 0)
 	{
-		tab[j] = s1[j];
-		j++;
+		nb = -nb;
+		write(0, "-", 1);
 	}
-	while (s2 && s2[i])
+	if (nb > 9)
 	{
-		tab[i + j] = s2[i];
-		i++;
+		txt = nb % 10 + '0';
+		nb = nb / 10;
+		ft_putnbr(nb);
+		write(0, &txt, 1);
 	}
-	return (tab);
+	else
+	{
+		txt = nb + '0';
+		write(0, &txt, 1);
+	}
 }
