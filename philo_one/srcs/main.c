@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/07 22:36:28 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/08 10:28:20 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void			*eat(void *sophos_pointer)
 		take_fork(sophos);
 		if (sophos->hand == 2)
 		{
-			pthread_mutex_lock(&g_mutex);
+			pthread_mutex_lock(&g_safe);
 			gettimeofday(&sophos->last_meal, NULL);
-			pthread_mutex_unlock(&g_mutex);
+			pthread_mutex_unlock(&g_safe);
 			sophos_activity(sophos->number, " is eating\n", g_sophos_die);
 			usleep(1000 * g_time_to_eat);
 			put_fork(sophos);
@@ -70,7 +70,7 @@ static int		launch_thread(t_sophos *sophos)
 	if ((ret = pthread_create(&tid[i], NULL, sophos_is_alive, (void *)save)))
 		exit(free_fct(&sophos, tid, 1));
 	pthread_join(tid[i], NULL);
-	pthread_mutex_unlock(&g_mutex);
+	pthread_mutex_unlock(&g_safe);
 	while (--i >= 0)
 		pthread_detach(tid[i]);
 	free(tid);
@@ -90,10 +90,12 @@ int				main(int argc, char **argv)
 	}
 	g_sophos_die = 1;
 	pthread_mutex_init(&g_mutex, NULL);
+	pthread_mutex_init(&g_safe, NULL);
 	sophos = sophos_sit_down(1, g_number_of_sophos);
 	put_fork_on_table(sophos);
 	ret = launch_thread(sophos);
 	free_fct(&sophos, NULL, 0);
 	pthread_mutex_destroy(&g_mutex);
+	pthread_mutex_destroy(&g_safe);
 	return (ret);
 }

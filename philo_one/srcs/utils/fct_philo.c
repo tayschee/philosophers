@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 13:38:35 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/07 22:30:35 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/08 10:34:45 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	sophos_activity(int nb, char *txt, int f)
 		if (sophos_nb)
 			free(sophos_nb);
 		join = ft_strjoin(nb_timer, txt);
+		if (nb_timer)
+			free(nb_timer);
 		if (join)
 		{
 			ft_putstr(join);

@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 14:17:21 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/07 21:36:10 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/08 10:36:06 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void		*sophos_is_alive(void *sophos_point)
 		while (sophos)
 		{
 			i += sophos->eat_max != -1 && !sophos->eat_max ? 1 : 0;
-			pthread_mutex_lock(&g_mutex);
+			pthread_mutex_lock(&g_safe);
 			if (is_die(sophos->last_meal) < 0 || (i == g_number_of_sophos))
 			{
 				g_sophos_die = 0;
@@ -32,11 +32,11 @@ void		*sophos_is_alive(void *sophos_point)
 					sophos_activity(sophos->number, " died\n", 1);
 				return (NULL);
 			}
-			pthread_mutex_unlock(&g_mutex);
+			pthread_mutex_unlock(&g_safe);
 			sophos = sophos->next;
 		}
 		sophos = sophos_point;
-		usleep(5000);
+		usleep(1000);
 	}
 	return (NULL);
 }
