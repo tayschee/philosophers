@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:49 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/08 10:22:44 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/08 11:20:18 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int						g_time_to_eat;
 int						g_time_to_sleep;
 int						g_eat_max;
 
-pthread_mutex_t			g_mutex;
+pthread_mutex_t			*g_mutex;
 pthread_mutex_t			g_safe;
 
 t_val					time_past(t_val begin_timer);

@@ -6,22 +6,17 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/08 10:28:20 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/08 11:25:13 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void		sophos_think(t_sophos *sophos)
-{
-	sophos_activity(sophos->number, " is thinking\n", g_sophos_die);
-}
-
 static void		sophos_sleep(t_sophos *sophos)
 {
 	sophos_activity(sophos->number, " is sleeping\n", g_sophos_die);
 	usleep(1000 * g_time_to_sleep);
-	sophos_think(sophos);
+	sophos_activity(sophos->number, " is thinking\n", g_sophos_die);
 }
 
 void			*eat(void *sophos_pointer)
@@ -36,7 +31,7 @@ void			*eat(void *sophos_pointer)
 		{
 			pthread_mutex_lock(&g_safe);
 			gettimeofday(&sophos->last_meal, NULL);
-			pthread_mutex_unlock(&g_safe);
+			pthread_mutex_unlock(&g_safe); 
 			sophos_activity(sophos->number, " is eating\n", g_sophos_die);
 			usleep(1000 * g_time_to_eat);
 			put_fork(sophos);
@@ -81,7 +76,9 @@ int				main(int argc, char **argv)
 {
 	t_sophos		*sophos;
 	int				ret;
+	int				i;
 
+	i = -1;
 	ret = 0;
 	if (check_argv(argc, argv))
 	{
@@ -89,13 +86,17 @@ int				main(int argc, char **argv)
 		return (1);
 	}
 	g_sophos_die = 1;
-	pthread_mutex_init(&g_mutex, NULL);
+	if (!(g_mutex = malloc(sizeof(pthread_mutex_t) * g_number_of_sophos)))
+		return (1);
+	while (++i < g_number_of_sophos)
+		pthread_mutex_init(&g_mutex[i], NULL);
 	pthread_mutex_init(&g_safe, NULL);
 	sophos = sophos_sit_down(1, g_number_of_sophos);
 	put_fork_on_table(sophos);
 	ret = launch_thread(sophos);
 	free_fct(&sophos, NULL, 0);
-	pthread_mutex_destroy(&g_mutex);
+	while (--i >= 0)
+		pthread_mutex_destroy(&g_mutex[i]);
 	pthread_mutex_destroy(&g_safe);
 	return (ret);
 }
