@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 13:34:46 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/08 14:32:46 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/08 14:36:49 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void		take_fork(t_sophos *sophos)
 		pthread_mutex_unlock(&g_mutex[fork]);
 	fork = sophos->number == 1 ? g_number_of_sophos - 1 : sophos->number - 2;
 	pthread_mutex_lock(&g_mutex[fork]);
-	if ((*(sophos->f_right) && *(sophos->f_left)) &&
+	if ((*(sophos->f_right) && *(sophos->f_left)) ||
 	(sophos->hand == 1 && *(sophos->f_left)))
 	{
 		*(sophos->f_left) -= 1;
