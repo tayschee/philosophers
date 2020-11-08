@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 14:17:21 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/08 14:19:10 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/08 14:27:09 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void		*sophos_is_alive(void *sophos_point)
 			return (NULL);
 		}
 		pthread_mutex_unlock(&g_safe[j]);
-		usleep(1000);
+		usleep(4000);
 	}
 	return (NULL);
 }
