@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:49 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/08 12:04:11 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/08 15:44:33 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ typedef struct			s_sophos
 	t_val				last_meal;
 	int					*f_right;
 	int					*f_left;
-	int					hand;
+	int					handr;
+	int					handl;
 	struct s_sophos		*next;
 }						t_sophos;
 
