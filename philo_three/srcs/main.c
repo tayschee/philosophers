@@ -6,22 +6,17 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/07 23:08:32 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/08 12:37:16 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void		sophos_think(t_sophos *sophos)
-{
-	sophos_activity(sophos->number, " is thinking\n", sophos->number, 1);
-}
-
 static void		sophos_sleep(t_sophos *sophos)
 {
-	sophos_activity(sophos->number, " is sleeping\n", sophos->number, 1);
+	sophos_activity(sophos->number, " is sleeping\n", g_sophos_die, 1);
 	usleep(1000 * g_time_to_sleep);
-	sophos_think(sophos);
+	sophos_activity(sophos->number, " is thinking\n", g_sophos_die, 1);
 }
 
 void			*eat(void *sophos_pointer)
@@ -91,11 +86,11 @@ int				main(int argc, char **argv)
 		ft_putstr("Les philosophes ne peuvent pas se reunir\n");
 		return (1);
 	}
-	if ((g_fork = sem_open("/fork", O_CREAT, 0644, g_number_of_sophos)) != 0)
+	if ((g_fork = sem_open("/fork", O_CREAT, 0644, g_number_of_sophos)) == 0)
 		return (1);
-	if ((g_safe = sem_open("/protect", O_CREAT, 0644, 1)) != 0)
+	if ((g_safe = sem_open("/protect", O_CREAT, 0644, 1)) == 0)
 		return (1);
-	if ((g_meal = sem_open("/meal", O_CREAT, 0644, 1)) != 0)
+	if ((g_meal = sem_open("/meal", O_CREAT, 0644, 1)) == 0)
 		return (1);
 	sem_close(g_fork);
 	sem_close(g_safe);
