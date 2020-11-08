@@ -6,11 +6,28 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/08 11:25:13 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/08 11:54:54 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static int		mutex()
+{
+	int i;
+
+	i = -1;
+	if (!(g_mutex = malloc(sizeof(pthread_mutex_t) * g_number_of_sophos)))
+		return (1);
+	if (!(g_safe = malloc(sizeof(pthread_mutex_t) * g_number_of_sophos)))
+		return (1);
+	while (++i < g_number_of_sophos)
+	{
+		pthread_mutex_init(&g_mutex[i], NULL);
+		pthread_mutex_init(&g_safe[i], NULL);
+	}
+	return (0);
+}
 
 static void		sophos_sleep(t_sophos *sophos)
 {
@@ -29,9 +46,9 @@ void			*eat(void *sophos_pointer)
 		take_fork(sophos);
 		if (sophos->hand == 2)
 		{
-			pthread_mutex_lock(&g_safe);
+			pthread_mutex_lock(&g_safe[sophos->number - 1]);
 			gettimeofday(&sophos->last_meal, NULL);
-			pthread_mutex_unlock(&g_safe); 
+			pthread_mutex_unlock(&g_safe[sophos->number - 1]); 
 			sophos_activity(sophos->number, " is eating\n", g_sophos_die);
 			usleep(1000 * g_time_to_eat);
 			put_fork(sophos);
@@ -49,6 +66,7 @@ static int		launch_thread(t_sophos *sophos)
 	int			ret;
 	pthread_t	*tid;
 	t_sophos	*save;
+	void		*safe;
 
 	i = -1;
 	save = sophos;
@@ -64,8 +82,8 @@ static int		launch_thread(t_sophos *sophos)
 	}
 	if ((ret = pthread_create(&tid[i], NULL, sophos_is_alive, (void *)save)))
 		exit(free_fct(&sophos, tid, 1));
-	pthread_join(tid[i], NULL);
-	pthread_mutex_unlock(&g_safe);
+	pthread_join(tid[i], &safe);
+	pthread_mutex_unlock((pthread_mutex_t *)safe);
 	while (--i >= 0)
 		pthread_detach(tid[i]);
 	free(tid);
@@ -76,9 +94,7 @@ int				main(int argc, char **argv)
 {
 	t_sophos		*sophos;
 	int				ret;
-	int				i;
-
-	i = -1;
+	
 	ret = 0;
 	if (check_argv(argc, argv))
 	{
@@ -86,17 +102,16 @@ int				main(int argc, char **argv)
 		return (1);
 	}
 	g_sophos_die = 1;
-	if (!(g_mutex = malloc(sizeof(pthread_mutex_t) * g_number_of_sophos)))
+	if (mutex())
 		return (1);
-	while (++i < g_number_of_sophos)
-		pthread_mutex_init(&g_mutex[i], NULL);
-	pthread_mutex_init(&g_safe, NULL);
 	sophos = sophos_sit_down(1, g_number_of_sophos);
 	put_fork_on_table(sophos);
 	ret = launch_thread(sophos);
 	free_fct(&sophos, NULL, 0);
-	while (--i >= 0)
-		pthread_mutex_destroy(&g_mutex[i]);
-	pthread_mutex_destroy(&g_safe);
+	while (--g_number_of_sophos >= 0)
+	{
+		pthread_mutex_destroy(&g_mutex[g_number_of_sophos]);
+		pthread_mutex_destroy(&g_safe[g_number_of_sophos]);
+	}
 	return (ret);
 }
