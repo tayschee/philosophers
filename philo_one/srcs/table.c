@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 14:17:21 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/08 12:15:18 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/08 14:19:10 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,25 @@
 void		*sophos_is_alive(void *sophos_point)
 {
 	t_sophos	*sophos;
-	int			i;
+	int			j;
 
 	sophos = sophos_point;
+	j = sophos->number - 1;
 	while (sophos)
 	{
-		i = 0;
-		while (sophos)
+		pthread_mutex_lock(&g_safe[j]);
+		if (is_die(sophos->last_meal) < 0 || sophos->eat_max == 0)
 		{
-			i += sophos->eat_max != -1 && !sophos->eat_max ? 1 : 0;
-			pthread_mutex_lock(&g_safe[sophos->number - 1]);
-			if (is_die(sophos->last_meal) < 0 || (i == g_number_of_sophos))
+			if (sophos->eat_max != 0 && g_sophos_die != 0)
 			{
 				g_sophos_die = 0;
-				if (!(i == g_number_of_sophos && g_eat_max != -1))
-					sophos_activity(sophos->number, " died\n", 1);
-				return (&g_safe[sophos->number - 1]);
+				sophos_activity(sophos->number, " died\n", 1);
 			}
-			pthread_mutex_unlock(&g_safe[sophos->number - 1]);
-			sophos = sophos->next;
+			pthread_mutex_unlock(&g_safe[j]);
+			return (NULL);
 		}
-		sophos = sophos_point;
-		usleep(3000);
+		pthread_mutex_unlock(&g_safe[j]);
+		usleep(1000);
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/08 12:04:05 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/08 14:19:41 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,9 @@ static int		launch_thread(t_sophos *sophos)
 	int			i;
 	int			ret;
 	pthread_t	*tid;
-	t_sophos	*save;
-	void		*safe;
 
 	i = -1;
-	save = sophos;
-	if (!(tid = malloc(sizeof(pthread_t) * (g_number_of_sophos + 1))))
+	if (!(tid = malloc(sizeof(pthread_t) * (g_number_of_sophos * 2))))
 		exit(free_fct(&sophos, NULL, 1));
 	gettimeofday(&g_begin, NULL);
 	while (++i < g_number_of_sophos)
@@ -79,13 +76,13 @@ static int		launch_thread(t_sophos *sophos)
 		gettimeofday(&sophos->last_meal, NULL);
 		if ((ret = pthread_create(&tid[i], NULL, eat, (void *)sophos)))
 			exit(free_fct(&sophos, tid, 1));
+		if ((ret = pthread_create(&tid[i + g_number_of_sophos], NULL, sophos_is_alive, (void *)sophos)))
+			exit(free_fct(&sophos, tid, 1));
 		sophos = sophos->next;
 	}
-	if ((ret = pthread_create(&tid[i], NULL, sophos_is_alive, (void *)save)))
-		exit(free_fct(&sophos, tid, 1));
-	pthread_join(tid[i], &safe);
-	pthread_mutex_unlock((pthread_mutex_t *)safe);
-	while (--i >= 0)
+	while(--i >= 0)
+		pthread_join(tid[i + g_number_of_sophos], NULL);
+	while (++i < g_number_of_sophos)
 		pthread_detach(tid[i]);
 	free(tid);
 	return (0);
