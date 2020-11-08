@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 13:34:46 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/08 16:24:12 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/08 16:28:34 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,11 @@ void		put_fork(t_sophos *sophos)
 
 	fork = g_number_of_sophos - 1;
 	pthread_mutex_lock(&g_mutex[fork]);
-	*(sophos->f_right) = 0;
+	*(sophos->f_right) = 1;
 	pthread_mutex_unlock(&g_mutex[fork]);
 	fork = sophos->number == 1 ? g_number_of_sophos - 1 : sophos->number - 2;
 	pthread_mutex_lock(&g_mutex[fork]);
-	*(sophos->f_left) = 0;
+	*(sophos->f_left) = 1;
 	pthread_mutex_unlock(&g_mutex[fork]);
 	sophos->handr = 0;
 	sophos->handl = 0;
