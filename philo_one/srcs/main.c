@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/08 11:54:54 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/08 12:04:05 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static int		mutex()
 		pthread_mutex_init(&g_mutex[i], NULL);
 		pthread_mutex_init(&g_safe[i], NULL);
 	}
+	pthread_mutex_init(&g_write, NULL);
 	return (0);
 }
 
