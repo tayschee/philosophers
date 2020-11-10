@@ -6,22 +6,31 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/07 22:42:54 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/10 12:07:17 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void		sophos_think(t_sophos *sophos)
+static int		mutex(void)
 {
-	sophos_activity(sophos->number, " is thinking\n", g_sophos_die);
+	link_sem();
+	if ((g_safe = sem_open("safe", O_CREAT, 0644, g_number_of_sophos)) == 0)
+		return (1);
+	if ((g_write = sem_open("write", O_CREAT, 0644, g_number_of_sophos)) == 0)
+		return (1);
+	if ((g_fork = sem_open("fork", O_CREAT, 0644, g_number_of_sophos)) == 0)
+		return (1);
+	if ((g_meal = sem_open("meal", O_CREAT, 0644, (int)
+	(g_number_of_sophos * 0.5))) == 0)
+		return (1);
+	return (0);
 }
-
 static void		sophos_sleep(t_sophos *sophos)
 {
 	sophos_activity(sophos->number, " is sleeping\n", g_sophos_die);
 	usleep(1000 * g_time_to_sleep);
-	sophos_think(sophos);
+	sophos_activity(sophos->number, " is thinking\n", g_sophos_die);
 }
 
 void			*eat(void *sophos_pointer)
@@ -34,9 +43,9 @@ void			*eat(void *sophos_pointer)
 		take_fork(sophos);
 		if (sophos->hand == 2)
 		{
-			sem_wait(&g_safe);
+			sem_wait(g_safe);
 			gettimeofday(&sophos->last_meal, NULL);
-			sem_post(&g_safe);
+			sem_post(g_safe);
 			sophos_activity(sophos->number, " is eating\n", g_sophos_die);
 			usleep(1000 * g_time_to_eat);
 			put_fork(sophos);
@@ -53,11 +62,9 @@ static int		launch_thread(t_sophos *sophos)
 	int			i;
 	int			ret;
 	pthread_t	*tid;
-	t_sophos	*save;
-
+	
 	i = -1;
-	save = sophos;
-	if (!(tid = malloc(sizeof(pthread_t) * (g_number_of_sophos + 1))))
+	if (!(tid = malloc(sizeof(pthread_t) * (g_number_of_sophos * 2))))
 		return (free_fct(&sophos, NULL, 1));
 	gettimeofday(&g_begin, NULL);
 	while (++i < g_number_of_sophos)
@@ -65,12 +72,13 @@ static int		launch_thread(t_sophos *sophos)
 		gettimeofday(&sophos->last_meal, NULL);
 		if ((ret = pthread_create(&tid[i], NULL, eat, (void *)sophos)))
 			return (free_fct(&sophos, tid, 1));
+		if ((ret = pthread_create(&tid[i + g_number_of_sophos], NULL, sophos_is_alive, (void *)sophos)))
+			return (free_fct(&sophos, tid, 1));
 		sophos = sophos->next;
 	}
-	if ((ret = pthread_create(&tid[i], NULL, sophos_is_alive, (void *)save)))
-		return (free_fct(&sophos, tid, 1));
-	pthread_join(tid[i], NULL);
-	while (--i >= 0)
+	while(--i >= 0)
+		pthread_join(tid[i + g_number_of_sophos], NULL);
+	while (++i < g_number_of_sophos)
 		pthread_detach(tid[i]);
 	free(tid);
 	return (0);
@@ -87,19 +95,13 @@ int				main(int argc, char **argv)
 		ft_putstr("Les philosophes ne peuvent pas se reunir\n");
 		return (1);
 	}
-	link_sem();
-	if ((g_safe = sem_open("count", O_CREAT, 0644, g_number_of_sophos)) != 0)
-		return (1);
-	if ((g_fork = sem_open("fork", O_CREAT, 0644, g_number_of_sophos)) != 0)
-		return (1);
-	if ((g_meal = sem_open("fork2", O_CREAT | O_EXCL, 0644, (int)
-	(g_number_of_sophos * 0.5))) != 0)
-		return (1);
 	sophos = sophos_sit_down(1, g_number_of_sophos);
+	if (mutex())
+		free_fct(&sophos, NULL, 0);
 	ret = launch_thread(sophos);
 	if (ret == 0)
 		free_fct(&sophos, NULL, 0);
-	sem_close(g_semaphore);
+	sem_close(g_fork);
 	sem_close(g_meal);
 	link_sem();
 	return (ret);

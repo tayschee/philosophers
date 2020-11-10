@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:49 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/07 22:45:27 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/10 11:03:34 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <stdlib.h>
 # include <semaphore.h>
 # include <fcntl.h>
+
+typedef struct timeval	t_val;
 
 typedef struct			s_sophos
 {
@@ -40,6 +42,7 @@ int						g_eat_max;
 sem_t					*g_fork;
 sem_t					*g_meal;
 sem_t					*g_safe;
+sem_t					*g_write;
 
 t_val					time_past(t_val begin_timer);
 int						convert_sec_to_msec(time_t sec, suseconds_t usec);

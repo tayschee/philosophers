@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/05 15:36:11 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/07 22:45:29 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/10 10:58:48 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void		*ft_calloc(size_t count, size_t size)
 void		link_sem(void)
 {
 	sem_unlink("fork");
-	sem_unlink("fork2");
-	sem_unlink("count");
+	sem_unlink("meal");
+	sem_unlink("safe");
+	sem_unlink("write");
 }

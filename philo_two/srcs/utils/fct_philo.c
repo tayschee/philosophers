@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 13:38:35 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/07 22:43:08 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/10 10:52:40 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	sophos_activity(int nb, char *txt, int f)
 
 	if (f)
 	{
+		sem_wait(g_write);
 		timer = time_past(g_begin);
 		nb_timer = ft_itoa(convert_sec_to_msec(timer.tv_sec, timer.tv_usec));
 		join = ft_strjoin(nb_timer, " ");
@@ -46,6 +47,7 @@ void	sophos_activity(int nb, char *txt, int f)
 			ft_putstr(join);
 			free(join);
 		}
+		sem_post(g_write);
 	}
 }
 
