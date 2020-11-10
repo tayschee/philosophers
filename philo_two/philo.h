@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:49 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/10 11:03:34 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/10 14:27:47 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <semaphore.h>
 # include <fcntl.h>
+# include <stdio.h>
 
 typedef struct timeval	t_val;
 
@@ -41,7 +42,7 @@ int						g_eat_max;
 
 sem_t					*g_fork;
 sem_t					*g_meal;
-sem_t					*g_safe;
+sem_t					**g_safe;
 sem_t					*g_write;
 
 t_val					time_past(t_val begin_timer);
@@ -52,6 +53,7 @@ int						ft_atoi(const char *str);
 void					ft_putnbr(int n);
 int						ft_strlen(const char *txt);
 void					ft_putstr(char *txt);
+void					ft_putnbr(int n);
 
 t_sophos				*sophos_sit_down(int i, int nb_sophos);
 int						check_argv(int argc, char **argv);
@@ -64,5 +66,7 @@ int						free_fct(t_sophos **sophos, pthread_t *tid, int i);
 char					*ft_itoa(int n);
 char					*ft_strjoin(char const *s1, char const *s2);
 void					*ft_calloc(size_t count, size_t size);
-void					link_sem(void);
+int						link_sem(void);
+char					*name_sem(int i);
+void					close_sem(int i);
 #endif

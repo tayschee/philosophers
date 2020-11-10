@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/05 15:36:11 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/10 10:58:48 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/10 13:19:03 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,33 @@ void		*ft_calloc(size_t count, size_t size)
 	return ((void *)tab);
 }
 
-void		link_sem(void)
+int			link_sem(void)
 {
+	int		i;
+	char	*name;
+
+	i = -1;
 	sem_unlink("fork");
 	sem_unlink("meal");
-	sem_unlink("safe");
 	sem_unlink("write");
+	while (++i < g_number_of_sophos)
+	{
+		if (!(name = name_sem(i)))
+			return (1);
+		sem_unlink(name);
+		free(name);
+	}
+	return (0);
+}
+
+char		*name_sem(int i)
+{
+	char *merge;
+	char *number;
+
+	if (!(number = ft_itoa(i)))
+		return (NULL);
+	merge = ft_strjoin("safe", number);
+	free(number);
+	return (merge);
 }

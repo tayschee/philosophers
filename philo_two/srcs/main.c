@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/10 12:07:17 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/10 14:35:51 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,30 @@
 
 static int		mutex(void)
 {
-	link_sem();
-	if ((g_safe = sem_open("safe", O_CREAT, 0644, g_number_of_sophos)) == 0)
-		return (1);
-	if ((g_write = sem_open("write", O_CREAT, 0644, g_number_of_sophos)) == 0)
+	int i;
+	char *safe;
+
+	i = -1;
+	if ((g_write = sem_open("write", O_CREAT, 0644, 1)) == 0)
 		return (1);
 	if ((g_fork = sem_open("fork", O_CREAT, 0644, g_number_of_sophos)) == 0)
-		return (1);
+		return (2);
 	if ((g_meal = sem_open("meal", O_CREAT, 0644, (int)
 	(g_number_of_sophos * 0.5))) == 0)
-		return (1);
+		return (3);
+	if (!(g_safe = malloc(sizeof(sem_t *))))
+		return (4); 
+	while (++i < g_number_of_sophos)
+	{
+		if (!(safe = name_sem(i)))
+				return (4 + i);
+		if ((g_safe[i] = sem_open(safe, O_CREAT, 0644, 1)) == 0)
+		{
+			free(safe);
+			return (4 + i);
+		}
+		free(safe);
+	}
 	return (0);
 }
 static void		sophos_sleep(t_sophos *sophos)
@@ -43,9 +57,9 @@ void			*eat(void *sophos_pointer)
 		take_fork(sophos);
 		if (sophos->hand == 2)
 		{
-			sem_wait(g_safe);
+			sem_wait(g_safe[sophos->number - 1]);
 			gettimeofday(&sophos->last_meal, NULL);
-			sem_post(g_safe);
+			sem_post(g_safe[sophos->number - 1]);
 			sophos_activity(sophos->number, " is eating\n", g_sophos_die);
 			usleep(1000 * g_time_to_eat);
 			put_fork(sophos);
@@ -96,13 +110,18 @@ int				main(int argc, char **argv)
 		return (1);
 	}
 	sophos = sophos_sit_down(1, g_number_of_sophos);
+	if ((ret = link_sem()))
+	{
+		close_sem(ret);
+		link_sem();
+		return (1);
+	}
 	if (mutex())
 		free_fct(&sophos, NULL, 0);
-	ret = launch_thread(sophos);
-	if (ret == 0)
+	if (launch_thread(sophos))
 		free_fct(&sophos, NULL, 0);
-	sem_close(g_fork);
-	sem_close(g_meal);
-	link_sem();
+	close_sem(-1);
+	if (link_sem())
+		return (1);
 	return (ret);
 }
