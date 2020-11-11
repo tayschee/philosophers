@@ -2,7 +2,7 @@ EXEC = philo_one
 
 LIB = philo.a
 
-SRCSFILE = main.c table.c fork.c utils/fct_libft.c utils/fct_libft2.c utils/fct_philo.c utils/free.c
+SRCSFILE = main.c table.c fork.c sophos.c utils/fct_libft.c utils/fct_libft2.c utils/fct_philo.c utils/free.c
 
 SRCSDIR = ./srcs/
 
