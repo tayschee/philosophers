@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/08 16:23:12 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/11 15:16:18 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ void			*eat(void *sophos_pointer)
 	while (g_sophos_die)
 	{
 		take_fork(sophos);
-		if (sophos->handr && sophos->handl)
-		{
+		//if ((sophos->handr && sophos->handl) || sophos->hand == 2)
+		//{
 			pthread_mutex_lock(&g_safe[sophos->number - 1]);
 			gettimeofday(&sophos->last_meal, NULL);
 			pthread_mutex_unlock(&g_safe[sophos->number - 1]); 
@@ -56,7 +56,7 @@ void			*eat(void *sophos_pointer)
 			if (sophos->eat_max != -1 && --sophos->eat_max == 0)
 				return (NULL);
 			sophos_sleep(sophos);
-		}
+		//}
 	}
 	return (NULL);
 }
@@ -64,25 +64,20 @@ void			*eat(void *sophos_pointer)
 static int		launch_thread(t_sophos *sophos)
 {
 	int			i;
-	int			ret;
 	pthread_t	*tid;
+	int			ret;
 
 	i = -1;
 	if (!(tid = malloc(sizeof(pthread_t) * (g_number_of_sophos * 2))))
 		exit(free_fct(&sophos, NULL, 1));
 	gettimeofday(&g_begin, NULL);
-	while (++i < g_number_of_sophos)
-	{
-		gettimeofday(&sophos->last_meal, NULL);
-		if ((ret = pthread_create(&tid[i], NULL, eat, (void *)sophos)))
-			exit(free_fct(&sophos, tid, 1));
-		if ((ret = pthread_create(&tid[i + g_number_of_sophos], NULL, sophos_is_alive, (void *)sophos)))
-			exit(free_fct(&sophos, tid, 1));
-		sophos = sophos->next;
-	}
-	while(--i >= 0)
+	if ((ret = sophos_pair(sophos, tid)))
+		return (ret);
+	if ((ret = sophos_impair(sophos, tid)))
+		return (ret);
+	while(++i < g_number_of_sophos)
 		pthread_join(tid[i + g_number_of_sophos], NULL);
-	while (++i < g_number_of_sophos)
+	while (--i >= 0)
 		pthread_detach(tid[i]);
 	free(tid);
 	return (0);

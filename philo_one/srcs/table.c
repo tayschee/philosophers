@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 14:17:21 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/08 15:44:45 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/11 15:12:40 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,9 @@ t_sophos	*sophos_sit_down(int i, int nb)
 	sophos->eat_max = g_eat_max;
 	sophos->f_right = NULL;
 	sophos->f_left = NULL;
-	sophos->handr = 0;
-	sophos->handl = 0;
+	//sophos->handr = 0;
+	//sophos->handl = 0;
+	//sophos->hand = 0;
 	sophos->next = sophos_sit_down(++i, nb);
 	return (sophos);
 }

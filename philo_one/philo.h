@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:49 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/08 15:44:33 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/11 14:44:33 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <pthread.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdio.h>
 
 typedef struct timeval	t_val;
 
@@ -27,8 +28,7 @@ typedef struct			s_sophos
 	t_val				last_meal;
 	int					*f_right;
 	int					*f_left;
-	int					handr;
-	int					handl;
+	pthread_mutex_t		mutex_r;
 	struct s_sophos		*next;
 }						t_sophos;
 
@@ -64,4 +64,6 @@ void					take_fork(t_sophos *sophos);
 void					put_fork(t_sophos *sophos);
 void					*sophos_is_alive(void *sophos_point);
 int						free_fct(t_sophos **sophos, pthread_t *tid, int i);
+int						sophos_impair(t_sophos *sophos, pthread_t *tid);
+int						sophos_pair(t_sophos *sophos, pthread_t *tid);
 #endif
