@@ -51,9 +51,8 @@ int						is_die(t_val last_meal);
 int						ft_atoi(const char *str);
 int						ft_strlen(const char *txt);
 void					ft_putstr(char *txt);
-char					*ft_itoa(int nb);
-char					*ft_strjoin(char const *s1, char const *s2);
-void					*ft_calloc(size_t count, size_t size);
+void					ft_itoa(unsigned int time, unsigned int n, char *txt, unsigned int i);
+unsigned int			nb_chiffre(unsigned int n);
 
 t_sophos				*sophos_sit_down(int i, int nb_sophos);
 int						check_argv(int argc, char **argv);

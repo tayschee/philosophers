@@ -22,34 +22,16 @@ int		is_die(t_val last_meal)
 
 void	sophos_activity(int nb, char *txt, int f)
 {
-	t_val	timer;
-	char	*sophos_nb;
-	char	*nb_timer;
-	char	*join;
+	t_val	t;
+	unsigned int time;
 
 	if (f)
 	{
-		//pthread_mutex_lock(&g_write);
-		timer = time_past(g_begin);
-		nb_timer = ft_itoa(convert_sec_to_msec(timer.tv_sec, timer.tv_usec));
-		join = ft_strjoin(nb_timer, " ");
-		if (nb_timer)
-			free(nb_timer);
-		sophos_nb = ft_itoa(nb);
-		nb_timer = ft_strjoin(join, sophos_nb);
-		if (join)
-			free(join);
-		if (sophos_nb)
-			free(sophos_nb);
-		join = ft_strjoin(nb_timer, txt);
-		if (nb_timer)
-			free(nb_timer);
-		if (join)
-		{
-			ft_putstr(join);
-			free(join);
-		}
-		//pthread_mutex_unlock(&g_write);
+		pthread_mutex_lock(&g_write);
+		t = time_past(g_begin);
+		time = convert_sec_to_msec(t.tv_sec, t.tv_usec);
+		ft_itoa(time, nb, txt, nb_chiffre(time) + 1 + nb_chiffre(nb) + ft_strlen(txt));
+		pthread_mutex_unlock(&g_write);
 	}
 }
 

@@ -56,29 +56,44 @@ void	ft_putstr(char *txt)
 	write(1, txt, ft_strlen(txt));
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+unsigned int	nb_chiffre(unsigned int n)
 {
-	char	*tab;
-	int		i;
-	int		j;
-	int		size;
+	int i;
 
 	i = 0;
-	j = 0;
-	if (!s1 && !s2)
-		return (NULL);
-	size = ft_strlen(s1) + ft_strlen(s2);
-	if (!(tab = ft_calloc((size + 1), sizeof(char))))
-		return (NULL);
-	while (s1 && s1[j])
+	while (n > 0)
 	{
-		tab[j] = s1[j];
-		j++;
-	}
-	while (s2 && s2[i])
-	{
-		tab[i + j] = s2[i];
+		n = n / 10;
 		i++;
 	}
-	return (tab);
+	if (i == 0)
+		return (1);
+	return (i);
+}
+
+void	ft_itoa(unsigned int time, unsigned int n, char *txt, unsigned int i)
+{
+	unsigned int			j;
+	char		nb[i + 1];
+
+	j = ft_strlen(txt);
+	nb[i] = 0;
+	while (j > 0)
+		nb[--i] = txt[--j];
+	if (n == 0)
+		nb[--i] = '0';
+	while (n > 0)
+	{
+		nb[--i] = (n % 10) + '0';
+		n = n / 10;
+	}
+	nb[--i] =  ' ';
+	if (time == 0)
+		nb[--i] = '0';
+	while (time > 0)
+	{
+		nb[--i] = (time % 10) + '0';
+		time = time / 10;
+	}
+	ft_putstr(nb);
 }
