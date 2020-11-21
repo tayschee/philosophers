@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 13:34:46 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/11 15:08:39 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/20 15:58:32 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void		take_fork(t_sophos *sophos)
 {
 	int fork;
 	
-	if (sophos->handl == 0)
+	while (sophos->handl == 0)
 	{
 		fork = sophos->number == 1 ? g_number_of_sophos - 1 : sophos->number - 2;
 		pthread_mutex_lock(&g_mutex[fork]);
@@ -84,7 +84,7 @@ void		take_fork(t_sophos *sophos)
 {
 	int	fork;
 
-	if (sophos->handr == 0)
+	while (sophos->handr == 0)
 	{
 		fork = sophos->number - 1;
 		pthread_mutex_lock(&g_mutex[fork]);
@@ -117,3 +117,19 @@ void		put_fork(t_sophos *sophos)
 		fork = sophos->number - 1;	
 	pthread_mutex_unlock(&g_mutex[fork]);
 }
+
+/*void		put_fork(t_sophos *sophos)
+{
+	int fork;
+
+	fork = sophos->number == 1 ? g_number_of_sophos - 1 : sophos->number - 2;
+	pthread_mutex_lock(&g_mutex[fork]);
+	*(sophos->f_left) = 1;
+	pthread_mutex_unlock(&g_mutex[fork]);
+	fork = sophos->number - 1;
+	pthread_mutex_lock(&g_mutex[fork]);
+	*(sophos->f_right) = 1;
+	pthread_mutex_unlock(&g_mutex[fork]);
+	sophos->handr = 0;
+	sophos->handl = 0;
+}*/

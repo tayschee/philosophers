@@ -6,36 +6,43 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 14:17:21 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/11 15:12:40 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/20 16:05:29 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void		*sophos_is_alive(void *sophos_point)
+void		sophos_is_alive(void *sophos_point)
 {
 	t_sophos	*sophos;
+	t_sophos	*save;
 	int			j;
 
 	sophos = sophos_point;
-	j = sophos->number - 1;
-	while (sophos)
+	save = sophos;
+	while (g_sophos_die)
 	{
-		pthread_mutex_lock(&g_safe[j]);
-		if (is_die(sophos->last_meal) < 0 || sophos->eat_max == 0)
+		while (sophos)
 		{
-			if (sophos->eat_max != 0 && g_sophos_die != 0)
+			j = sophos->number - 1;
+			pthread_mutex_lock(&g_safe[j]);
+			if (is_die(sophos->last_meal) < 0 || sophos->eat_max == 0)
 			{
-				g_sophos_die = 0;
-				sophos_activity(sophos->number, " died\n", 1);
+				if (sophos->eat_max != 0 && g_sophos_die != 0)
+				{
+					g_sophos_die = 0;
+					sophos_activity(sophos->number, " died\n", 1);
+				}
+				pthread_mutex_unlock(&g_safe[j]);
+				return ;
 			}
 			pthread_mutex_unlock(&g_safe[j]);
-			return (NULL);
+			sophos = sophos->next;
 		}
-		pthread_mutex_unlock(&g_safe[j]);
+		sophos = save;
 		usleep(4000);
 	}
-	return (NULL);
+	return ;
 }
 
 void		put_fork_on_table(t_sophos *sophos)
@@ -70,9 +77,9 @@ t_sophos	*sophos_sit_down(int i, int nb)
 	sophos->eat_max = g_eat_max;
 	sophos->f_right = NULL;
 	sophos->f_left = NULL;
-	//sophos->handr = 0;
-	//sophos->handl = 0;
-	//sophos->hand = 0;
+	sophos->handr = 0;
+	sophos->handl = 0;
+	sophos->hand = 0;
 	sophos->next = sophos_sit_down(++i, nb);
 	return (sophos);
 }
