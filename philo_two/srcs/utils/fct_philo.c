@@ -23,17 +23,20 @@ int		is_die(t_val last_meal)
 void	sophos_activity(int nb, char *txt, int f)
 {
 	t_val	timer;
+	int		t;
 
+	sem_wait(g_write);
 	if (f)
 	{
-		sem_wait(g_write);
-		timer = time_past(g_begin);
-		ft_putnbr(convert_sec_to_msec(timer.tv_sec, timer.tv_usec));
-		ft_putstr(" ");
-		ft_putnbr(nb);
-		ft_putstr(txt);
 		sem_post(g_write);
+		timer = time_past(g_begin);
+		t = convert_sec_to_msec(timer.tv_sec, timer.tv_usec);
+        //je pourrais calculer moi meme la taille de strlen
+        ft_print(t, nb, txt, nb_chiffre(t) + 1 + nb_chiffre(nb) + ft_strlen(txt));
 	}
+	else
+		sem_post(g_write);
+	
 }
 
 int		check_argv(int argc, char **argv)

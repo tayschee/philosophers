@@ -50,10 +50,12 @@ int						convert_sec_to_msec(time_t sec, suseconds_t usec);
 int						is_die(t_val last_meal);
 
 int						ft_atoi(const char *str);
-void					ft_putnbr(int n);
 int						ft_strlen(const char *txt);
 void					ft_putstr(char *txt);
-void					ft_putnbr(int n);
+unsigned int    		nb_chiffre(unsigned int n);
+void    				ft_print(unsigned int time, unsigned int n, char *txt, unsigned int i);
+char					*ft_itoa(int nb);
+char					*ft_strjoin(const char *s1, const char *s2);
 
 t_sophos				*sophos_sit_down(int i, int nb_sophos);
 int						check_argv(int argc, char **argv);
@@ -63,9 +65,6 @@ void					take_fork(t_sophos *sophos);
 void					put_fork(t_sophos *sophos);
 void					*sophos_is_alive(void *sophos_point);
 int						free_fct(t_sophos **sophos, pthread_t *tid, int i);
-char					*ft_itoa(int n);
-char					*ft_strjoin(char const *s1, char const *s2);
-void					*ft_calloc(size_t count, size_t size);
 int						link_sem(void);
 char					*name_sem(int i);
 void					close_sem(int i);

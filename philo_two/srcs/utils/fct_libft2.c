@@ -12,20 +12,35 @@
 
 #include "philo.h"
 
-static int	nb_chiffre(long int n)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int i;
+	char	*tab;
+	int		i;
+	int		j;
+	int		size;
 
 	i = 0;
-	while (n > 0)
+	j = 0;
+	if (!s1 && !s2)
+		return (NULL);
+	size = ft_strlen(s1) + ft_strlen(s2);
+	if (!(tab = malloc((size + 1) * sizeof(char))))
+		return (NULL);
+	while (s1 && s1[j])
 	{
-		n = n / 10;
+		tab[j] = s1[j];
+		j++;
+	}
+	while (s2 && s2[i])
+	{
+		tab[i + j] = s2[i];
 		i++;
 	}
-	return (i);
+	tab[i + j] = 0;
+	return (tab);
 }
 
-char		*ft_itoa(int n)
+char	*ft_itoa(int n)
 {
 	int			i;
 	char		*nb;
@@ -41,8 +56,9 @@ char		*ft_itoa(int n)
 	i += nb_chiffre(nbr);
 	if (i == 0)
 		i = 1;
-	if (!(nb = (char *)ft_calloc(i + 1, sizeof(char))))
+	if (!(nb = (char *)malloc(i + 1 * sizeof(char))))
 		return (NULL);
+	nb[i] = 0;
 	nb[0] = '-';
 	if (n == 0)
 		nb[0] = '0';
@@ -52,22 +68,6 @@ char		*ft_itoa(int n)
 		nbr = nbr / 10;
 	}
 	return (nb);
-}
-
-void		*ft_calloc(size_t count, size_t size)
-{
-	size_t			i;
-	unsigned char	*tab;
-
-	i = 0;
-	if (!(tab = malloc(size * count)))
-		return (NULL);
-	while (i < count)
-	{
-		tab[i] = '\0';
-		i++;
-	}
-	return ((void *)tab);
 }
 
 int			link_sem(void)
