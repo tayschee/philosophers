@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 13:34:46 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/20 15:58:32 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/21 13:22:36 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,9 @@
 
 void		take_fork(t_sophos *sophos)
 {
-	int fork;
-
-	if (sophos->number % 2)
-		fork = sophos->number - 1;
-	else
-		fork = sophos->number == 1 ? g_number_of_sophos - 1 : sophos->number - 2;
-	pthread_mutex_lock(&g_mutex[fork]);
+	pthread_mutex_lock(&g_mutex[sophos->fork1]);
 	sophos_activity(sophos->number, " has taken a fork\n", g_sophos_die);
-	if (sophos->number % 2)
-		fork = sophos->number == 1 ? g_number_of_sophos - 1 : sophos->number - 2;
-	else
-		fork = sophos->number - 1;
-	pthread_mutex_lock(&g_mutex[fork]);
+	pthread_mutex_lock(&g_mutex[sophos->fork2]);
 	sophos_activity(sophos->number, " has taken a fork\n", g_sophos_die);
 }
 
@@ -104,18 +94,8 @@ void		take_fork(t_sophos *sophos)
 
 void		put_fork(t_sophos *sophos)
 {
-	int fork;
-
-	if (sophos->number % 2)
-		fork = sophos->number - 1;
-	else
-		fork = sophos->number == 1 ? g_number_of_sophos - 1 : sophos->number - 2;
-	pthread_mutex_unlock(&g_mutex[fork]);
-	if (sophos->number % 2)
-		fork = sophos->number == 1 ? g_number_of_sophos - 1 : sophos->number - 2;
-	else
-		fork = sophos->number - 1;	
-	pthread_mutex_unlock(&g_mutex[fork]);
+	pthread_mutex_unlock(&g_mutex[sophos->fork1]);	
+	pthread_mutex_unlock(&g_mutex[sophos->fork2]);
 }
 
 /*void		put_fork(t_sophos *sophos)

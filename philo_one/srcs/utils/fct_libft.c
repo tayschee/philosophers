@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 13:38:51 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/05 15:41:40 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/21 13:10:38 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ unsigned int	nb_chiffre(unsigned int n)
 void	ft_itoa(unsigned int time, unsigned int n, char *txt, unsigned int i)
 {
 	unsigned int			j;
-	char		nb[i + 1];
+	char					nb[i + 1];
 
-	j = ft_strlen(txt);
+	j = ft_strlen(txt); //le calcul peut etre eviter
 	nb[i] = 0;
 	while (j > 0)
 		nb[--i] = txt[--j];

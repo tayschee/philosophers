@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 13:38:35 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/11 12:59:34 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/21 13:11:45 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,18 @@ void	sophos_activity(int nb, char *txt, int f)
 	t_val	t;
 	unsigned int time;
 
+	pthread_mutex_lock(&g_write);
 	if (f)
 	{
-		pthread_mutex_lock(&g_write);
+		pthread_mutex_unlock(&g_write);
 		t = time_past(g_begin);
 		time = convert_sec_to_msec(t.tv_sec, t.tv_usec);
+		//je pourrais calculer moi meme la taille de strlen
 		ft_itoa(time, nb, txt, nb_chiffre(time) + 1 + nb_chiffre(nb) + ft_strlen(txt));
-		pthread_mutex_unlock(&g_write);
 	}
+	else
+		pthread_mutex_unlock(&g_write);
+	
 }
 
 int		check_argv(int argc, char **argv)
@@ -45,8 +49,10 @@ int		check_argv(int argc, char **argv)
 		return (1);
 	if ((g_time_to_eat = ft_atoi(argv[3])) < 0 && g_time_to_eat > 2147483)
 		return (1);
+	g_time_to_eat *= 1000;
 	if ((g_time_to_sleep = ft_atoi(argv[4])) < 0 && g_time_to_sleep > 2147483)
 		return (1);
+	g_time_to_sleep *= 1000;
 	if (argc == 6)
 	{
 		if ((g_eat_max = (int)ft_atoi(argv[5])) <= 0)
