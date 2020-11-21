@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:49 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/21 14:06:49 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/21 14:37:09 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void					*eat(void *sophos);
 void					sophos_activity(int nb, char *txt, int f);
 void					take_fork(t_sophos *sophos);
 void					put_fork(t_sophos *sophos);
-void					sophos_is_alive(void *sophos_point);
+void					*sophos_is_alive(void *sophos_point);
 int						free_fct(t_sophos **sophos, pthread_t *tid, int i);
 int						sophos_impair(t_sophos *sophos, pthread_t *tid);
 int						sophos_pair(t_sophos *sophos, pthread_t *tid);

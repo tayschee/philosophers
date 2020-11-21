@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/21 14:26:56 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/21 14:34:52 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,20 +73,17 @@ static int		launch_thread(t_sophos *sophos)
 	int			i;
 	pthread_t	*tid;
 	int			ret;
-	t_sophos	*save;
 
 	i = -1;
-	save = sophos;
-	if (!(tid = malloc(sizeof(pthread_t) * (g_number_of_sophos /** 2*/))))
+	if (!(tid = malloc(sizeof(pthread_t) * (g_number_of_sophos * 2))))
 		exit(free_fct(&sophos, NULL, 1));
 	gettimeofday(&g_begin, NULL);
 	if ((ret = sophos_pair(sophos, tid)))
 		return (ret);
 	if ((ret = sophos_impair(sophos, tid)))
 		return (ret);
-	/*while(++i < g_number_of_sophos)
-		pthread_join(tid[i + g_number_of_sophos], NULL);*/
-	sophos_is_alive(save);
+	while(++i < g_number_of_sophos)
+		pthread_join(tid[i + g_number_of_sophos], NULL);
 	while (++i < g_number_of_sophos)
 		pthread_detach(tid[i]);
 	free(tid);
