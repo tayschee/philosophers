@@ -56,27 +56,45 @@ void	ft_putstr(char *txt)
 	write(1, txt, ft_strlen(txt));
 }
 
-void	ft_putnbr(int n)
+unsigned int    nb_chiffre(unsigned int n)
 {
-	char		txt;
-	long int	nb;
+        int i;
 
-	nb = n;
-	if (nb < 0)
-	{
-		nb = -nb;
-		write(0, "-", 1);
-	}
-	if (nb > 9)
-	{
-		txt = nb % 10 + '0';
-		nb = nb / 10;
-		ft_putnbr(nb);
-		write(0, &txt, 1);
-	}
-	else
-	{
-		txt = nb + '0';
-		write(0, &txt, 1);
-	}
+        i = 0;
+        while (n > 0)
+        {
+                n = n / 10;
+                i++;
+        }
+        if (i == 0)
+                return (1);
+        return (i);
+}
+
+void    ft_print(unsigned int time, unsigned int n, char *txt,
+				unsigned int i)
+{
+        unsigned int    j;
+        char                    nb[i + 1];
+
+        j = ft_strlen(txt);
+        nb[i] = 0;
+        while (j > 0)
+                        nb[--i] = txt[--j];
+        if (n == 0)
+                        nb[--i] = '0';
+        while (n > 0)
+        {
+                        nb[--i] = (n % 10) + '0';
+                        n = n / 10;
+        }
+        nb[--i] = ' ';
+        if (time == 0)
+                        nb[--i] = '0';
+        while (time > 0)
+        {
+                        nb[--i] = (time % 10) + '0';
+                        time = time / 10;
+        }
+        ft_putstr(nb);
 }

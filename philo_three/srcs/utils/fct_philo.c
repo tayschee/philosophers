@@ -20,21 +20,22 @@ int		is_die(t_val last_meal)
 	return (g_time_to_die - convert_sec_to_msec(timer.tv_sec, timer.tv_usec));
 }
 
-void	sophos_activity(int nb, char *txt, int f, int f2)
+void	sophos_activity(int nb, char *txt, int f, int d)
 {
 	t_val	timer;
+	int		i;
 
-	if (!f)
-		return ;
-	if (f2)
-		sem_wait(g_safe);
-	timer = time_past(g_begin);
-	ft_putnbr(convert_sec_to_msec(timer.tv_sec, timer.tv_usec));
-	ft_putstr(" ");
-	ft_putnbr(nb);
-	ft_putstr(txt);
-	if (f2)
+	sem_wait(g_write);
+	if (f)
+	{
 		sem_post(g_safe);
+		timer = time_past(g_begin);
+		i = convert_sec_to_msec(timer.tv_sec, timer.tv_usec);
+		ft_print(nb, i, txt, nb_chiffre(nb) + 1 + nb_chiffre(i) + ft_strlen(txt));
+	}
+	else if (f && d)
+		sem_post(g_write);
+	
 }
 
 int		check_argv(int argc, char **argv)
