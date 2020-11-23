@@ -24,7 +24,9 @@ void		*sophos_is_alive(void *sophos_point)
 		{
 			if (sophos->eat_max != 0 && g_sophos_die)
 			{
+				sem_wait(g_write);
 				g_sophos_die = 0;
+				sem_post(g_write);
 				sophos_activity(sophos->number, " died\n", 1);
 			}
 			sem_post(g_safe[sophos->number - 1]);

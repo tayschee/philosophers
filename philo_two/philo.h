@@ -40,10 +40,10 @@ int						g_time_to_eat;
 int						g_time_to_sleep;
 int						g_eat_max;
 
+sem_t					*g_write;
 sem_t					*g_fork;
 sem_t					*g_meal;
 sem_t					**g_safe;
-sem_t					*g_write;
 
 t_val					time_past(t_val begin_timer);
 int						convert_sec_to_msec(time_t sec, suseconds_t usec);
@@ -62,7 +62,7 @@ int						check_argv(int argc, char **argv);
 void					*eat(void *sophos);
 void					sophos_activity(int nb, char *txt, int f);
 void					take_fork(t_sophos *sophos);
-void					put_fork(t_sophos *sophos);
+void					put_fork();
 void					*sophos_is_alive(void *sophos_point);
 int						free_fct(t_sophos **sophos, pthread_t *tid, int i);
 int						link_sem(void);

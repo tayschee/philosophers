@@ -18,20 +18,20 @@ static int		mutex(void)
 	char *safe;
 
 	i = -1;
-	if ((g_write = sem_open("write", O_CREAT, 0644, 1)) == 0)
+	if ((g_write = sem_open("write", O_CREAT | O_EXCL, 0644, 1)) == 0)
 		return (1);
-	if ((g_fork = sem_open("fork", O_CREAT, 0644, g_number_of_sophos)) == 0)
+	if ((g_fork = sem_open("fork", O_CREAT | O_EXCL, 0644, g_number_of_sophos)) == 0)
 		return (2);
-	if ((g_meal = sem_open("meal", O_CREAT, 0644, (int)
+	if ((g_meal = sem_open("meal", O_CREAT | O_EXCL, 0644, (int)
 	(g_number_of_sophos * 0.5))) == 0)
 		return (3);
-	if (!(g_safe = malloc(sizeof(sem_t *))))
+	if (!(g_safe = malloc(sizeof(sem_t *) *  g_number_of_sophos)))
 		return (4); 
 	while (++i < g_number_of_sophos)
 	{
 		if (!(safe = name_sem(i)))
 				return (4 + i);
-		if ((g_safe[i] = sem_open(safe, O_CREAT, 0644, 1)) == 0)
+		if ((g_safe[i] = sem_open(safe, O_CREAT | O_EXCL, 0644, 1)) == 0)
 		{
 			free(safe);
 			return (4 + i);
@@ -40,11 +40,20 @@ static int		mutex(void)
 	}
 	return (0);
 }
-static void		sophos_sleep(t_sophos *sophos)
+
+void                    ft_usleep(int sleep_time)
 {
-	sophos_activity(sophos->number, " is sleeping\n", g_sophos_die);
-	usleep(1000 * g_time_to_sleep);
-	sophos_activity(sophos->number, " is thinking\n", g_sophos_die);
+        t_val   begin;
+        t_val   now;
+
+        gettimeofday(&begin, NULL);
+        while (1)
+        {
+			usleep(50);
+			now = time_past(begin);
+			if (sleep_time - convert_sec_to_msec(now.tv_sec, now.tv_usec) < 0)
+					break;
+        }
 }
 
 void			*eat(void *sophos_pointer)
@@ -55,18 +64,17 @@ void			*eat(void *sophos_pointer)
 	while (g_sophos_die)
 	{
 		take_fork(sophos);
-		if (sophos->hand == 2)
-		{
-			sem_wait(g_safe[sophos->number - 1]);
-			gettimeofday(&sophos->last_meal, NULL);
-			sem_post(g_safe[sophos->number - 1]);
-			sophos_activity(sophos->number, " is eating\n", g_sophos_die);
-			usleep(1000 * g_time_to_eat);
-			put_fork(sophos);
-			if (sophos->eat_max != -1 && --sophos->eat_max == 0)
-				return (NULL);
-			sophos_sleep(sophos);
-		}
+		sem_wait(g_safe[sophos->number - 1]);
+		gettimeofday(&sophos->last_meal, NULL);
+		sem_post(g_safe[sophos->number - 1]);
+		sophos_activity(sophos->number, " is eating\n", g_sophos_die);
+		ft_usleep(g_time_to_eat);
+		put_fork(sophos);
+		if (sophos->eat_max != -1 && --sophos->eat_max == 0)
+			return (NULL);
+		sophos_activity(sophos->number, " is sleeping\n", g_sophos_die);
+		ft_usleep(g_time_to_sleep);
+		sophos_activity(sophos->number, " is thinking\n", g_sophos_die);
 	}
 	return (NULL);
 }
