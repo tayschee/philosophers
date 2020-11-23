@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 13:38:35 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/10 14:33:13 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/23 16:43:49 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,11 @@ void	sophos_activity(int nb, char *txt, int f)
 		sem_post(g_write);
 		timer = time_past(g_begin);
 		t = convert_sec_to_msec(timer.tv_sec, timer.tv_usec);
-        //je pourrais calculer moi meme la taille de strlen
-        ft_print(t, nb, txt, nb_chiffre(t) + 1 + nb_chiffre(nb) + ft_strlen(txt));
+		ft_print(t, nb, txt, nb_chiffre(t) + 1 + nb_chiffre(nb) +
+		ft_strlen(txt));
 	}
 	else
 		sem_post(g_write);
-	
 }
 
 int		check_argv(int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 14:17:21 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/23 15:08:05 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/23 16:22:23 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ void		*sophos_is_alive(void *sophos_point)
 				sophos_activity(sophos->number, " died\n", 1);
 			}
 			pthread_mutex_unlock(&g_safe[j]);
-			return NULL;
+			return (NULL);
 		}
 		pthread_mutex_unlock(&g_safe[j]);
 		usleep(4000);
 	}
-	return NULL;
+	return (NULL);
 }
 
 void		put_fork_on_table(t_sophos *sophos)
@@ -71,7 +71,8 @@ t_sophos	*sophos_sit_down(int i, int nb)
 	sophos->f_right = NULL;
 	sophos->f_left = NULL;
 	sophos->fork1 = sophos->number - 1;
-	sophos->fork2 =  sophos->number == 1 ? g_number_of_sophos - 1 : sophos->number - 2;
+	sophos->fork2 = sophos->number == 1 ? g_number_of_sophos - 1 :
+	sophos->number - 2;
 	sophos->next = sophos_sit_down(++i, nb);
 	return (sophos);
 }

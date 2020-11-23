@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/10 14:35:51 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/23 17:12:00 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,23 @@
 
 static int		mutex(void)
 {
-	int i;
-	char *safe;
+	int		i;
+	char	*safe;
 
-	i = -1;
+	i = g_number_of_sophos;
 	if ((g_write = sem_open("write", O_CREAT | O_EXCL, 0644, 1)) == 0)
 		return (1);
-	if ((g_fork = sem_open("fork", O_CREAT | O_EXCL, 0644, g_number_of_sophos)) == 0)
+	if (!(g_fork = sem_open("fork", O_CREAT | O_EXCL, 0644, i)))
 		return (2);
-	if ((g_meal = sem_open("meal", O_CREAT | O_EXCL, 0644, (int)
-	(g_number_of_sophos * 0.5))) == 0)
+	if ((g_meal = sem_open("meal", O_CREAT | O_EXCL, 0644, (i * 0.5))) == 0)
 		return (3);
-	if (!(g_safe = malloc(sizeof(sem_t *) *  g_number_of_sophos)))
-		return (4); 
+	if (!(g_safe = malloc(sizeof(sem_t *) * g_number_of_sophos)))
+		return (4);
+	i = -1;
 	while (++i < g_number_of_sophos)
 	{
 		if (!(safe = name_sem(i)))
-				return (4 + i);
+			return (4 + i);
 		if ((g_safe[i] = sem_open(safe, O_CREAT | O_EXCL, 0644, 1)) == 0)
 		{
 			free(safe);
@@ -41,19 +41,19 @@ static int		mutex(void)
 	return (0);
 }
 
-void                    ft_usleep(int sleep_time)
+void			ft_usleep(int sleep_time)
 {
-        t_val   begin;
-        t_val   now;
+	t_val	begin;
+	t_val	now;
 
-        gettimeofday(&begin, NULL);
-        while (1)
-        {
-			usleep(50);
-			now = time_past(begin);
-			if (sleep_time - convert_sec_to_msec(now.tv_sec, now.tv_usec) < 0)
-					break;
-        }
+	gettimeofday(&begin, NULL);
+	while (1)
+	{
+		usleep(50);
+		now = time_past(begin);
+		if (sleep_time - convert_sec_to_msec(now.tv_sec, now.tv_usec) < 0)
+			break ;
+	}
 }
 
 void			*eat(void *sophos_pointer)
@@ -84,7 +84,7 @@ static int		launch_thread(t_sophos *sophos)
 	int			i;
 	int			ret;
 	pthread_t	*tid;
-	
+
 	i = -1;
 	if (!(tid = malloc(sizeof(pthread_t) * (g_number_of_sophos * 2))))
 		return (free_fct(&sophos, NULL, 1));
@@ -94,11 +94,12 @@ static int		launch_thread(t_sophos *sophos)
 		gettimeofday(&sophos->last_meal, NULL);
 		if ((ret = pthread_create(&tid[i], NULL, eat, (void *)sophos)))
 			return (free_fct(&sophos, tid, 1));
-		if ((ret = pthread_create(&tid[i + g_number_of_sophos], NULL, sophos_is_alive, (void *)sophos)))
+		if ((ret = pthread_create(&tid[i + g_number_of_sophos], NULL,
+		sophos_is_alive, (void *)sophos)))
 			return (free_fct(&sophos, tid, 1));
 		sophos = sophos->next;
 	}
-	while(--i >= 0)
+	while (--i >= 0)
 		pthread_join(tid[i + g_number_of_sophos], NULL);
 	while (++i < g_number_of_sophos)
 		pthread_join(tid[i], NULL);

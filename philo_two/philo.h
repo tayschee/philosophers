@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:49 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/10 14:27:47 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/23 16:35:49 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ int						is_die(t_val last_meal);
 int						ft_atoi(const char *str);
 int						ft_strlen(const char *txt);
 void					ft_putstr(char *txt);
-unsigned int    		nb_chiffre(unsigned int n);
-void    				ft_print(unsigned int time, unsigned int n, char *txt, unsigned int i);
+unsigned int			nb_chiffre(unsigned int n);
+void					ft_print(unsigned int time, unsigned int n, char *txt,
+						unsigned int i);
 char					*ft_itoa(int nb);
 char					*ft_strjoin(const char *s1, const char *s2);
 

@@ -6,13 +6,13 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/21 14:34:52 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/23 16:33:57 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int		mutex()
+static int		mutex(void)
 {
 	int i;
 
@@ -41,7 +41,7 @@ void			ft_usleep(int sleep_time)
 		usleep(50);
 		now = time_past(begin);
 		if (sleep_time - convert_sec_to_msec(now.tv_sec, now.tv_usec) < 0)
-			break;
+			break ;
 	}
 }
 
@@ -55,7 +55,7 @@ void			*eat(void *sophos_pointer)
 		take_fork(sophos);
 		pthread_mutex_lock(&g_safe[sophos->number - 1]);
 		gettimeofday(&sophos->last_meal, NULL);
-		pthread_mutex_unlock(&g_safe[sophos->number - 1]); 
+		pthread_mutex_unlock(&g_safe[sophos->number - 1]);
 		sophos_activity(sophos->number, " is eating\n", g_sophos_die);
 		ft_usleep(g_time_to_eat);
 		put_fork(sophos);
@@ -82,7 +82,7 @@ static int		launch_thread(t_sophos *sophos)
 		return (ret);
 	if ((ret = sophos_impair(sophos, tid)))
 		return (ret);
-	while(++i < g_number_of_sophos)
+	while (++i < g_number_of_sophos)
 		pthread_join(tid[i + g_number_of_sophos], NULL);
 	while (++i < g_number_of_sophos)
 		pthread_detach(tid[i]);
@@ -94,7 +94,7 @@ int				main(int argc, char **argv)
 {
 	t_sophos		*sophos;
 	int				ret;
-	
+
 	ret = 0;
 	if (check_argv(argc, argv))
 	{

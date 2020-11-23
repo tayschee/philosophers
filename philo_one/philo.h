@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:49 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/21 14:37:09 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/23 16:22:50 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int						is_die(t_val last_meal);
 int						ft_atoi(const char *str);
 int						ft_strlen(const char *txt);
 void					ft_putstr(char *txt);
-void					ft_itoa(unsigned int time, unsigned int n, char *txt, unsigned int i);
+void					ft_itoa(unsigned int time, unsigned int n, char *txt,
+						unsigned int i);
 unsigned int			nb_chiffre(unsigned int n);
 
 t_sophos				*sophos_sit_down(int i, int nb_sophos);

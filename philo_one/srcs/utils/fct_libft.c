@@ -6,13 +6,13 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 13:38:51 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/21 13:10:38 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/23 16:27:24 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int		ft_atoi(const char *str)
+int				ft_atoi(const char *str)
 {
 	int			i;
 	int			sign;
@@ -41,7 +41,7 @@ int		ft_atoi(const char *str)
 	return (value);
 }
 
-int		ft_strlen(const char *txt)
+int				ft_strlen(const char *txt)
 {
 	int	i;
 
@@ -51,7 +51,7 @@ int		ft_strlen(const char *txt)
 	return (i);
 }
 
-void	ft_putstr(char *txt)
+void			ft_putstr(char *txt)
 {
 	write(1, txt, ft_strlen(txt));
 }
@@ -71,12 +71,13 @@ unsigned int	nb_chiffre(unsigned int n)
 	return (i);
 }
 
-void	ft_itoa(unsigned int time, unsigned int n, char *txt, unsigned int i)
+void			ft_itoa(unsigned int time, unsigned int n,
+				char *txt, unsigned int i)
 {
 	unsigned int			j;
 	char					nb[i + 1];
 
-	j = ft_strlen(txt); //le calcul peut etre eviter
+	j = ft_strlen(txt);
 	nb[i] = 0;
 	while (j > 0)
 		nb[--i] = txt[--j];
@@ -87,7 +88,7 @@ void	ft_itoa(unsigned int time, unsigned int n, char *txt, unsigned int i)
 		nb[--i] = (n % 10) + '0';
 		n = n / 10;
 	}
-	nb[--i] =  ' ';
+	nb[--i] = ' ';
 	if (time == 0)
 		nb[--i] = '0';
 	while (time > 0)

@@ -5,18 +5,18 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/16 13:38:51 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/05 15:41:40 by tbigot           ###   ########.fr       */
+/*   Created: 2020/11/23 16:55:44 by tbigot            #+#    #+#             */
+/*   Updated: 2020/11/23 17:02:43 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int		ft_atoi(const char *str)
+int				ft_atoi(const char *str)
 {
-	int			i;
-	int			sign;
-	int			value;
+	int	i;
+	int	sign;
+	int	value;
 
 	i = 0;
 	value = 0;
@@ -41,7 +41,7 @@ int		ft_atoi(const char *str)
 	return (value);
 }
 
-int		ft_strlen(const char *txt)
+int				ft_strlen(const char *txt)
 {
 	int	i;
 
@@ -51,50 +51,50 @@ int		ft_strlen(const char *txt)
 	return (i);
 }
 
-void	ft_putstr(char *txt)
+void			ft_putstr(char *txt)
 {
 	write(1, txt, ft_strlen(txt));
 }
 
-unsigned int    nb_chiffre(unsigned int n)
+unsigned int	nb_chiffre(unsigned int n)
 {
-        int i;
+	int i;
 
-        i = 0;
-        while (n > 0)
-        {
-                n = n / 10;
-                i++;
-        }
-        if (i == 0)
-                return (1);
-        return (i);
+	i = 0;
+	while (n > 0)
+	{
+		n = n / 10;
+		i++;
+	}
+	if (i == 0)
+		return (1);
+	return (i);
 }
 
-void    ft_print(unsigned int time, unsigned int n, char *txt, unsigned int i)
+void			ft_print(unsigned int time, unsigned int n, char *txt,
+				unsigned int i)
 {
-        unsigned int                    j;
-        char                             nb[i + 1];
+	unsigned int	j;
+	char			nb[i + 1];
 
-        j = ft_strlen(txt); //le calcul peut etre eviter
-        nb[i] = 0;
-        while (j > 0)
-                nb[--i] = txt[--j];
-        if (n == 0)
-                nb[--i] = '0';
-        while (n > 0)
-        {
-                nb[--i] = (n % 10) + '0';
-                n = n / 10;
-        }
-        nb[--i] =  ' ';
-        if (time == 0)
-                nb[--i] = '0';
-        while (time > 0)
-        {
-                nb[--i] = (time % 10) + '0';
-                time = time / 10;
-        }
-        ft_putstr(nb);
+	j = ft_strlen(txt);
+	nb[i] = 0;
+	while (j > 0)
+		nb[--i] = txt[--j];
+	if (n == 0)
+		nb[--i] = '0';
+	while (n > 0)
+	{
+		nb[--i] = (n % 10) + '0';
+		n = n / 10;
+	}
+	nb[--i] = ' ';
+	if (time == 0)
+		nb[--i] = '0';
+	while (time > 0)
+	{
+		nb[--i] = (time % 10) + '0';
+		time = time / 10;
+	}
+	ft_putstr(nb);
 }
-

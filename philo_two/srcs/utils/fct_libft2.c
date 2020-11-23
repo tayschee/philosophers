@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/05 15:36:11 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/10 14:44:13 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/23 17:14:48 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,7 @@ char	*ft_itoa(int n)
 		nbr = nbr * -1;
 	}
 	i += nb_chiffre(nbr);
-	if (i == 0)
-		i = 1;
-	if (!(nb = (char *)malloc(i + 1 * sizeof(char))))
+	if (!(nb = (char *)malloc((i + 1) * sizeof(char))))
 		return (NULL);
 	nb[i] = 0;
 	nb[0] = '-';
@@ -70,7 +68,7 @@ char	*ft_itoa(int n)
 	return (nb);
 }
 
-int			link_sem(void)
+int		link_sem(void)
 {
 	int		i;
 	char	*name;
@@ -89,7 +87,7 @@ int			link_sem(void)
 	return (0);
 }
 
-char		*name_sem(int i)
+char	*name_sem(int i)
 {
 	char *merge;
 	char *number;
