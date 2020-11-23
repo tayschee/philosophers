@@ -101,7 +101,7 @@ static int		launch_thread(t_sophos *sophos)
 	while(--i >= 0)
 		pthread_join(tid[i + g_number_of_sophos], NULL);
 	while (++i < g_number_of_sophos)
-		pthread_detach(tid[i]);
+		pthread_join(tid[i], NULL);
 	free(tid);
 	return (0);
 }
