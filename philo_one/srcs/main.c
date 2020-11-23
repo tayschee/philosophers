@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/23 16:33:57 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/23 17:54:52 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ static int		launch_thread(t_sophos *sophos)
 		return (ret);
 	while (++i < g_number_of_sophos)
 		pthread_join(tid[i + g_number_of_sophos], NULL);
-	while (++i < g_number_of_sophos)
-		pthread_detach(tid[i]);
+	while (--i >= 0)
+		pthread_join(tid[i], NULL);
 	free(tid);
 	return (0);
 }
@@ -113,5 +113,8 @@ int				main(int argc, char **argv)
 		pthread_mutex_destroy(&g_mutex[g_number_of_sophos]);
 		pthread_mutex_destroy(&g_safe[g_number_of_sophos]);
 	}
+	free(g_safe);
+	free(g_mutex);
+	pthread_mutex_destroy(&g_write);
 	return (ret);
 }
