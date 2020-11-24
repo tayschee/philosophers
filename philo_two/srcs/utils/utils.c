@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 14:21:48 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/23 16:40:42 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/24 13:07:09 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@ void		close_sem(int i)
 		sem_close(g_meal);
 	while (++j < g_number_of_sophos)
 	{
-		if (j + 4 > i || i < 0)
+		if (j + 5 > i || i < 0)
 			sem_close(g_safe[j]);
 	}
-	free(g_safe);
+	if (j > 4)
+		free(g_safe);
 }
