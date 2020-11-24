@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 14:17:21 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/24 14:13:28 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/24 14:15:21 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ t_sophos	*sophos_sit_down(int i, int nb)
 	else
 		sophos->fork1 = sophos->number == 1 ? g_number_of_sophos - 1 :
 		sophos->number - 2;
-	if (sophos->number % 2)
+	if (!(sophos->number % 2))
 		sophos->fork2 = sophos->number - 1;
 	else
 		sophos->fork2 = sophos->number == 1 ? g_number_of_sophos - 1 :
