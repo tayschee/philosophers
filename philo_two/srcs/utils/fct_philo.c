@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 13:38:35 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/23 16:43:49 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/24 13:22:52 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		is_die(t_val last_meal)
 	return (g_time_to_die - convert_sec_to_msec(timer.tv_sec, timer.tv_usec));
 }
 
-void	sophos_activity(int nb, char *txt, int f)
+void	sophos_activity(int nb, char *txt, int f, int d)
 {
 	t_val	timer;
 	int		t;
@@ -28,7 +28,8 @@ void	sophos_activity(int nb, char *txt, int f)
 	sem_wait(g_write);
 	if (f)
 	{
-		sem_post(g_write);
+		if (d)
+			sem_post(g_write);
 		timer = time_past(g_begin);
 		t = convert_sec_to_msec(timer.tv_sec, timer.tv_usec);
 		ft_print(t, nb, txt, nb_chiffre(t) + 1 + nb_chiffre(nb) +

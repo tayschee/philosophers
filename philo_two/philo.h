@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:49 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/23 16:35:49 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/24 13:25:07 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,12 @@ char					*ft_strjoin(const char *s1, const char *s2);
 t_sophos				*sophos_sit_down(int i, int nb_sophos);
 int						check_argv(int argc, char **argv);
 void					*eat(void *sophos);
-void					sophos_activity(int nb, char *txt, int f);
-void					take_fork(t_sophos *sophos);
-void					put_fork();
+void					sophos_activity(int nb, char *txt, int f, int d);
 void					*sophos_is_alive(void *sophos_point);
 int						free_fct(t_sophos **sophos, pthread_t *tid, int i);
 int						link_sem(void);
 char					*name_sem(int i);
 void					close_sem(int i);
+void					take_fork(t_sophos *sophos);
+void					put_fork();
 #endif
