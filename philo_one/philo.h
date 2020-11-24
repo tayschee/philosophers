@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:49 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/24 14:40:25 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/24 15:10:05 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int						g_eat_max;
 pthread_mutex_t			*g_mutex;
 pthread_mutex_t			*g_safe;
 pthread_mutex_t			g_write;
+pthread_mutex_t			g_pair;
+pthread_mutex_t			g_impair;
 
 t_val					time_past(t_val begin_timer);
 int						convert_sec_to_msec(time_t sec, suseconds_t usec);
