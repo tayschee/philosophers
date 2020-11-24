@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 13:38:35 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/24 12:58:17 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/24 14:03:07 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ int		check_argv(int argc, char **argv)
 		return (1);
 	if ((g_time_to_die = ft_atoi(argv[2])) <= 0)
 		return (1);
-	if ((g_time_to_eat = ft_atoi(argv[3])) < 0 && g_time_to_eat > 2147483)
+	if ((g_time_to_eat = ft_atoi(argv[3])) < 0 || g_time_to_eat > 2147483)
 		return (1);
-	if ((g_time_to_sleep = ft_atoi(argv[4])) < 0 && g_time_to_sleep > 2147483)
+	if ((g_time_to_sleep = ft_atoi(argv[4])) < 0 || g_time_to_sleep > 2147483)
 		return (1);
 	if (argc == 6)
 	{
