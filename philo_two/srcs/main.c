@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/24 13:39:26 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/24 16:31:21 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int		mutex(void)
 		return (1);
 	if (!(g_fork = sem_open("fork", O_CREAT | O_EXCL, 0644, i)))
 		return (2);
-	if ((g_meal = sem_open("meal", O_CREAT | O_EXCL, 0644, i * 0.5)) == 0)
+	if ((g_meal = sem_open("meal", O_CREAT | O_EXCL, 0644, i / 2)) == 0)
 		return (3);
 	if (!(g_safe = malloc(sizeof(sem_t *) * g_number_of_sophos)))
 		return (4);

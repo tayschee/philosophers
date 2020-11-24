@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 14:17:21 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/24 13:40:29 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/24 16:19:16 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void		*sophos_is_alive(void *sophos_point)
 		sem_wait(g_safe[sophos->number - 1]);
 		if (is_die(sophos->last_meal) < 0 || sophos->eat_max == 0)
 		{
-			if (sophos->eat_max != 0 && g_sophos_die)
+			if (sophos->eat_max != 0)
 			{
 				sophos_activity(sophos->number, " died\n", 0);
 				g_sophos_die = 0;
