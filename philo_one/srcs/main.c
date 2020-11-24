@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/24 14:21:27 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/24 14:34:04 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,17 @@ static int		mutex(void)
 	if (!(g_mutex = malloc(sizeof(pthread_mutex_t) * g_number_of_sophos)))
 		return (1);
 	if (!(g_safe = malloc(sizeof(pthread_mutex_t) * g_number_of_sophos)))
+	{
+		free(g_mutex);
 		return (1);
+	}
 	while (++i < g_number_of_sophos)
 	{
 		pthread_mutex_init(&g_mutex[i], NULL);
 		pthread_mutex_init(&g_safe[i], NULL);
 	}
 	pthread_mutex_init(&g_write, NULL);
+	pthread_mutex_init(&g_meal, NULL);
 	return (0);
 }
 
