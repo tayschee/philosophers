@@ -2,7 +2,7 @@ EXEC = philo_three
 
 LIB = philo.a
 
-SRCSFILE = main.c table.c fork.c pid.c utils/fct_libft.c utils/fct_philo.c utils/free.c
+SRCSFILE = main.c table.c fork.c pid.c utils/fct_libft.c utils/fct_philo.c utils/free.c utils/sem.c
 
 SRCSDIR = ./srcs/
 

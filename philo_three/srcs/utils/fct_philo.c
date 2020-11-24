@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 13:38:35 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/07 22:57:46 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/24 12:58:17 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,15 @@ void	sophos_activity(int nb, char *txt, int f, int d)
 	sem_wait(g_write);
 	if (f)
 	{
-		sem_post(g_safe);
+		if (d)
+			sem_post(g_write);
 		timer = time_past(g_begin);
 		i = convert_sec_to_msec(timer.tv_sec, timer.tv_usec);
-		ft_print(nb, i, txt, nb_chiffre(nb) + 1 + nb_chiffre(i) + ft_strlen(txt));
+		ft_print(i, nb, txt, nb_chiffre(nb) + 1 + nb_chiffre(i) +
+		ft_strlen(txt));
 	}
-	else if (f && d)
+	else
 		sem_post(g_write);
-	
 }
 
 int		check_argv(int argc, char **argv)
