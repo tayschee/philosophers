@@ -14,12 +14,13 @@
 
 void		take_fork(t_sophos *sophos)
 {
-	//pthread_mutex_lock(&g_pair);
+	int i;
+
+	i = sophos->number != g_number_of_sophos ? sophos->number : 0;
 	pthread_mutex_lock(&g_mutex[sophos->fork1]);
 	sophos_activity(sophos->number, " has taken a fork\n", 1);
 	pthread_mutex_lock(&g_mutex[sophos->fork2]);
 	sophos_activity(sophos->number, " has taken a fork\n", 1);
-	//pthread_mutex_unlock(&g_pair);
 }
 
 void		put_fork(t_sophos *sophos)
