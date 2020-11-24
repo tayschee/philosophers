@@ -34,7 +34,7 @@ void		*sophos_is_alive(void *sophos_point)
 			return (NULL);
 		}
 		pthread_mutex_unlock(&g_safe[j]);
-		usleep(4000);
+		usleep(1000);
 	}
 	return (NULL);
 }
