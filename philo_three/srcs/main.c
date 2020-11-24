@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/24 13:00:18 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/24 17:34:46 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int				launch_thread(t_sophos *sophos)
 		sem_post(g_safe[WEXITSTATUS(status) - 1]);
 	}
 	while (--i >= 0 && j < g_number_of_sophos)
-		kill(pid[i], SIGINT);
+		kill(pid[i], SIGKILL);
 	return (0);
 }
 
