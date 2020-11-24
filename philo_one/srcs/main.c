@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/24 14:17:07 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/24 14:21:27 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,13 @@ void			ft_usleep(int sleep_time)
 	t_val	now;
 
 	gettimeofday(&begin, NULL);
+	usleep(sleep_time * 750);
 	while (1)
 	{
-		usleep(50);
 		now = time_past(begin);
 		if (sleep_time - convert_sec_to_msec(now.tv_sec, now.tv_usec) < 0)
 			break ;
+		usleep(50);
 	}
 }
 
