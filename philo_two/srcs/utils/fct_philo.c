@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 13:38:35 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/24 13:22:52 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/24 13:33:02 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ void	sophos_activity(int nb, char *txt, int f, int d)
 	t_val	timer;
 	int		t;
 
-	sem_wait(g_write);
-	if (f)
+	if (f && g_sophos_die)
 	{
 		if (d)
 			sem_post(g_write);
