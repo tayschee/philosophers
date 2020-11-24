@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/24 14:58:07 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/24 15:02:30 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static int		launch_thread(t_sophos *sophos)
 	gettimeofday(&g_begin, NULL);
 	if ((ret = sophos_pair(sophos, tid)))
 		return (ret);
-	usleep(g_time_to_die / 4);
+	usleep(g_time_to_eat * 250);
 	if ((ret = sophos_impair(sophos, tid)))
 		return (ret);
 	while (++i < g_number_of_sophos)
