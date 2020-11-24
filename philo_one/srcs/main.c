@@ -30,7 +30,6 @@ static int		mutex(void)
 		pthread_mutex_init(&g_safe[i], NULL);
 	}
 	pthread_mutex_init(&g_write, NULL);
-	pthread_mutex_init(&g_pair, NULL);
 	return (0);
 }
 
@@ -40,7 +39,7 @@ void			ft_usleep(int sleep_time)
 	t_val	now;
 
 	gettimeofday(&begin, NULL);
-	//usleep(sleep_time * 750);
+	usleep(sleep_time * 750);
 	while (1)
 	{
 		usleep(50);
@@ -85,6 +84,7 @@ static int		launch_thread(t_sophos *sophos)
 	gettimeofday(&g_begin, NULL);
 	if ((ret = sophos_pair(sophos, tid)))
 		return (ret);
+	usleep(500);
 	if ((ret = sophos_impair(sophos, tid)))
 		return (ret);
 	while (++i < g_number_of_sophos)

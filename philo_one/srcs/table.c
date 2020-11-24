@@ -24,7 +24,7 @@ void		*sophos_is_alive(void *sophos_point)
 		pthread_mutex_lock(&g_safe[j]);
 		if (is_die(sophos->last_meal) < 0 || sophos->eat_max == 0)
 		{
-			if (sophos->eat_max != 0 && g_sophos_die != 0)
+			if (sophos->eat_max != 0)
 			{
 				sophos_activity(sophos->number, " died\n", 0);
 				g_sophos_die = 0;

@@ -44,8 +44,7 @@ int						g_eat_max;
 pthread_mutex_t			*g_mutex;
 pthread_mutex_t			*g_safe;
 pthread_mutex_t			g_write;
-pthread_mutex_t			g_pair;
-pthread_mutex_t			g_impair;
+pthread_mutex_t			*g_pair;
 
 t_val					time_past(t_val begin_timer);
 int						convert_sec_to_msec(time_t sec, suseconds_t usec);
