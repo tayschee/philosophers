@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/25 11:27:50 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/25 13:19:41 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,14 @@ void			*eat(void *sophos_pointer)
 	{
 		take_fork(i + 1);
 		sem_wait(g_safe[i]);
+		if (!g_sophos_die)
+			break ;
 		gettimeofday(&sophos->last_meal, NULL);
 		sophos_activity(i + 1, " is eating\n", 1);
 		usleep(1000 * g_time_to_eat);
 		sem_post(g_safe[i]);
 		put_fork(sophos);
-		if (g_eat_max != -1 && --g_eat_max == 0)
+		if ((g_eat_max != -1 && --g_eat_max == 0) || !g_sophos_die)
 			break ;
 		sophos_activity(i + 1, " is sleeping\n", 1);
 		usleep(1000 * g_time_to_sleep);
@@ -66,6 +68,7 @@ void			*eat(void *sophos_pointer)
 	sem_wait(g_safe[sophos->number - 1]);
 	free_fct(&g_save, NULL, 1);
 	close_sem(-1);
+	i = g_sophos_die == 0 ? 0 : i;
 	exit(i);
 }
 

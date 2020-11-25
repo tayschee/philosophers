@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 14:17:21 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/25 12:53:03 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/25 13:17:28 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,8 @@ void			*sophos_is_alive(void *sophos_point)
 			{
 				sophos_activity(sophos->number, " died\n", 0);
 				g_sophos_die = 0;
-				free_fct(&g_save, NULL, 1);
-				unlink_sem();
-				close_sem(-1);
-				exit(0);
+				sem_wait(g_safe[sophos->number - 1]);
+				return (NULL);
 			}
 			sem_post(g_safe[sophos->number - 1]);
 			return (NULL);
