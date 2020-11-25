@@ -16,10 +16,10 @@ int			take_fork(int i)
 {
 	sem_wait(g_meal);
 	sem_wait(g_fork);
-	sophos_activity(i, " has taken a fork\n", g_sophos_die, 1);
+	sophos_activity(i, " has taken a fork\n", 1);
 	sem_wait(g_fork);
 	sem_post(g_meal);
-	sophos_activity(i, " has taken a fork\n", g_sophos_die, 1);
+	sophos_activity(i, " has taken a fork\n", 1);
 	return (0);
 }
 

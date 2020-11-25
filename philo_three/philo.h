@@ -22,6 +22,8 @@
 # include <signal.h>
 # include <sys/wait.h>
 
+#include <stdio.h>
+
 typedef struct timeval	t_val;
 
 typedef struct			s_sophos
@@ -31,7 +33,17 @@ typedef struct			s_sophos
 	t_val				last_meal;
 	int					hand;
 	void				*next;
+	sem_t				*safe;
 }						t_sophos;
+
+typedef	struct 			s_sem
+{
+	sem_t				**safe;
+	sem_t				*write;
+	sem_t				*meal;
+	sem_t				*fork;
+
+}						t_sem;	
 
 t_sophos				*g_save;
 t_val					g_begin;
@@ -42,6 +54,7 @@ int						g_time_to_eat;
 int						g_time_to_sleep;
 int						g_eat_max;
 
+t_sem					g_sema;
 sem_t					*g_fork;
 sem_t					*g_meal;
 sem_t					**g_safe;
@@ -64,7 +77,7 @@ char					*ft_itoa(int n);
 t_sophos				*sophos_sit_down(int i, int nb_sophos);
 int						check_argv(int argc, char **argv);
 void					*eat(void *sophos);
-void					sophos_activity(int nb, char *txt, int f, int d);
+void					sophos_activity(int nb, char *txt, int d);
 int						take_fork(int i);
 int						put_fork();
 void					*sophos_is_alive(void *sophos_point);
@@ -74,4 +87,5 @@ int						launch_thread(t_sophos	*sophos);
 int						unlink_sem(void);
 void					close_sem(int i);
 char					*name_sem(int i);
+int						sem();
 #endif

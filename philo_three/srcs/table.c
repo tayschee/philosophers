@@ -22,12 +22,12 @@ void			*sophos_is_alive(void *sophos_point)
 		sem_wait(g_safe[sophos->number - 1]);
 		if (is_die(sophos->last_meal) < 0 || g_eat_max == 0)
 		{
-			g_sophos_die = 0;
 			if (g_eat_max)
 			{
-				sophos_activity(sophos->number, " died\n", 1, 0);
+				sophos_activity(sophos->number, " died\n", 0);
+				g_sophos_die = 0;
 				free_fct(&g_save, NULL, 1);
-				close_sem(-1);
+				//close_sem(-1);
 				exit(0);
 			}
 			sem_post(g_safe[sophos->number - 1]);

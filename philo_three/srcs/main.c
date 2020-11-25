@@ -18,11 +18,11 @@ int				sem(void)
 	int		i;
 
 	i = g_number_of_sophos;
-	if ((g_fork = sem_open("/fork", O_CREAT | O_EXCL, 0644, i)) == 0)
+	if ((g_fork = sem_open("fork", O_CREAT | O_EXCL, 0644, i)) == SEM_FAILED)
 		return (1);
-	if ((g_meal = sem_open("/meal", O_CREAT | O_EXCL, 0644, i / 2)) == 0)
+	if ((g_meal = sem_open("meal", O_CREAT | O_EXCL, 0644, i / 2)) == SEM_FAILED)
 		return (2);
-	if ((g_write = sem_open("/write", O_CREAT | O_EXCL, 0644, 1)) == 0)
+	if ((g_write = sem_open("write", O_CREAT | O_EXCL, 0644, 1)) == SEM_FAILED)
 		return (3);
 	if (!(g_safe = malloc(sizeof(sem_t *) * g_number_of_sophos)))
 		return (4);
@@ -53,15 +53,15 @@ void			*eat(void *sophos_pointer)
 		take_fork(i + 1);
 		sem_wait(g_safe[i]);
 		gettimeofday(&sophos->last_meal, NULL);
-		sophos_activity(i + 1, " is eating\n", g_sophos_die, 1);
+		sophos_activity(i + 1, " is eating\n", 1);
 		usleep(1000 * g_time_to_eat);
 		sem_post(g_safe[i]);
 		put_fork(sophos);
-		if (g_sophos_die && g_eat_max != -1 && --g_eat_max == 0)
+		if (g_eat_max != -1 && --g_eat_max == 0)
 			break ;
-		sophos_activity(i + 1, " is sleeping\n", g_sophos_die, 1);
+		sophos_activity(i + 1, " is sleeping\n", 1);
 		usleep(1000 * g_time_to_sleep);
-		sophos_activity(i + 1, " is thinking\n", g_sophos_die, 1);
+		sophos_activity(i + 1, " is thinking\n", 1);
 	}
 	sem_wait(g_safe[sophos->number - 1]);
 	free_fct(&g_save, NULL, 1);
@@ -118,8 +118,10 @@ int				main(int argc, char **argv)
 		unlink_sem();
 		return (1);
 	}
+	//close_sem(-1);
 	ret = launch_thread(sophos);
-	close_sem(-1);
 	unlink_sem();
-	return (free_fct(&sophos, 0, ret));
+	close_sem(-1);
+	//return (free_fct(&sophos, 0, ret));
+	return (1);
 }
