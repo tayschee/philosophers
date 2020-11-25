@@ -25,11 +25,9 @@ void	sophos_activity(int nb, char *txt, int d)
 	t_val	timer;
 	int		i;
 
-	sem_wait(g_safe[nb]);
+	sem_wait(g_write);
 	if (g_sophos_die)
 	{
-		sem_wait(g_write);
-		sem_post(g_safe[nb]);
 		timer = time_past(g_begin);
 		i = convert_sec_to_msec(timer.tv_sec, timer.tv_usec);
 		ft_print(i, nb, txt, nb_chiffre(nb) + 1 + nb_chiffre(i) +
@@ -38,7 +36,7 @@ void	sophos_activity(int nb, char *txt, int d)
 			sem_post(g_write);
 	}
 	else	
-		sem_post(g_safe[nb]);
+		sem_post(g_write);
 }
 
 int		check_argv(int argc, char **argv)

@@ -23,12 +23,14 @@ void	close_sem(int i)
 		sem_close(g_meal);
 	if (i > 3 || i == -1)
 		sem_close(g_write);
+	if (i > 4|| i == -1)
+		sem_close(g_kill);
 	while (++j < g_number_of_sophos)
 	{
-		if (i > 4 + j || i == -1)
+		if (i > 5 + j || i == -1)
 			sem_close(g_safe[j]);
 	}
-	if (i > 4 || i == -1)
+	if (i > 5 || i == -1)
 		free(g_safe);
 }
 
@@ -41,6 +43,7 @@ int		unlink_sem(void)
 	sem_unlink("fork");
 	sem_unlink("meal");
 	sem_unlink("write");
+	sem_unlink("kill");
 	while (++i < g_number_of_sophos)
 	{
 		if (!(name = name_sem(i)))

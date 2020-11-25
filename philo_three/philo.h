@@ -36,15 +36,6 @@ typedef struct			s_sophos
 	sem_t				*safe;
 }						t_sophos;
 
-typedef	struct 			s_sem
-{
-	sem_t				**safe;
-	sem_t				*write;
-	sem_t				*meal;
-	sem_t				*fork;
-
-}						t_sem;	
-
 t_sophos				*g_save;
 t_val					g_begin;
 int						g_sophos_die;
@@ -54,11 +45,11 @@ int						g_time_to_eat;
 int						g_time_to_sleep;
 int						g_eat_max;
 
-t_sem					g_sema;
 sem_t					*g_fork;
 sem_t					*g_meal;
 sem_t					**g_safe;
 sem_t					*g_write;
+sem_t					*g_kill;
 
 t_val					time_past(t_val begin_timer);
 int						convert_sec_to_msec(time_t sec, suseconds_t usec);
@@ -88,4 +79,5 @@ int						unlink_sem(void);
 void					close_sem(int i);
 char					*name_sem(int i);
 int						sem();
+void					*kill_everything(void *pointer);
 #endif

@@ -26,7 +26,7 @@ void			*sophos_is_alive(void *sophos_point)
 			{
 				sophos_activity(sophos->number, " died\n", 0);
 				g_sophos_die = 0;
-				sem_wait(g_safe[sophos->number - 1]);
+				sem_post(g_kill);
 				return (NULL);
 			}
 			sem_post(g_safe[sophos->number - 1]);
