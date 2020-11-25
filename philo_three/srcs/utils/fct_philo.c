@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 13:38:35 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/25 13:12:10 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/25 14:16:39 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	sophos_activity(int nb, char *txt, int d)
 		if (d)
 			sem_post(g_write);
 	}
-	else	
+	else
 		sem_post(g_write);
 }
 

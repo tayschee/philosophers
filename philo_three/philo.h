@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:49 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/24 12:50:04 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/25 14:30:02 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <signal.h>
 # include <sys/wait.h>
 
-#include <stdio.h>
+# define V 0644
 
 typedef struct timeval	t_val;
 

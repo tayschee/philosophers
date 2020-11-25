@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/25 13:19:41 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/25 14:30:12 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int				sem(void)
 	i = g_number_of_sophos;
 	if ((g_fork = sem_open("fork", O_CREAT | O_EXCL, 0644, i)) == SEM_FAILED)
 		return (1);
-	if ((g_meal = sem_open("meal", O_CREAT | O_EXCL, 0644, i / 2)) == SEM_FAILED)
+	if ((g_meal = sem_open("meal", O_CREAT | O_EXCL, V, i / 2)) == SEM_FAILED)
 		return (2);
 	if ((g_write = sem_open("write", O_CREAT | O_EXCL, 0644, 1)) == SEM_FAILED)
 		return (3);
@@ -33,30 +33,28 @@ int				sem(void)
 	{
 		if (!(safe = name_sem(i)))
 			return (5 + i);
-		if ((g_safe[i] = sem_open(safe, O_CREAT | O_EXCL, 0644, 1)) == SEM_FAILED)
-		{
-			free(safe);
-			return (6 + i);
-		}
+		g_safe[i] = sem_open(safe, O_CREAT | O_EXCL, 0644, 1);
 		free(safe);
+		if (g_safe[i] == SEM_FAILED)
+			return (6 + i);
 	}
 	return (0);
 }
 
-void                    ft_usleep(int sleep_time)
+void			ft_usleep(int sleep_time)
 {
-        t_val   begin;
-        t_val   now;
+	t_val	begin;
+	t_val	now;
 
-        gettimeofday(&begin, NULL);
-		usleep(sleep_time * 500);
-        while (1)
-        {
-            usleep(50);
-            now = time_past(begin);
-            if (sleep_time - convert_sec_to_msec(now.tv_sec, now.tv_usec) < 0)
-            	break ;
-        }
+	gettimeofday(&begin, NULL);
+	usleep(sleep_time * 500);
+	while (1)
+	{
+		usleep(50);
+		now = time_past(begin);
+		if (sleep_time - convert_sec_to_msec(now.tv_sec, now.tv_usec) < 0)
+			break ;
+	}
 }
 
 void			*eat(void *sophos_pointer)
@@ -96,7 +94,7 @@ int				launch_thread(t_sophos *sophos)
 	pthread_t	tid;
 
 	i = -1;
-	j = 0;
+	j = -1;
 	g_save = sophos;
 	gettimeofday(&g_begin, NULL);
 	while (++i < g_number_of_sophos)
@@ -107,12 +105,9 @@ int				launch_thread(t_sophos *sophos)
 	}
 	pthread_create(&tid, NULL, kill_everything, pid);
 	pthread_detach(tid);
-	while (j < g_number_of_sophos && waitpid(-1, &status, 0) &&
+	while (++j < g_number_of_sophos && waitpid(-1, &status, 0) &&
 	WEXITSTATUS(status) != 0)
-	{
-		j++;
 		sem_post(g_safe[WEXITSTATUS(status) - 1]);
-	}
 	g_sophos_die = 0;
 	sem_post(g_kill);
 	return (0);
