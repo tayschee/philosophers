@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 11:00:55 by tbigot            #+#    #+#             */
-/*   Updated: 2020/11/24 17:34:46 by tbigot           ###   ########.fr       */
+/*   Updated: 2020/11/25 11:27:50 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int				sem(void)
 	{
 		if (!(safe = name_sem(i)))
 			return (4 + i);
-		if ((g_safe[i] = sem_open(safe, O_CREAT | O_EXCL, 0644, 1)) == 0)
+		if ((g_safe[i] = sem_open(safe, O_CREAT | O_EXCL, 0644, 1)) == SEM_FAILED)
 		{
 			free(safe);
 			return (5 + i);
@@ -118,10 +118,8 @@ int				main(int argc, char **argv)
 		unlink_sem();
 		return (1);
 	}
-	//close_sem(-1);
 	ret = launch_thread(sophos);
 	unlink_sem();
 	close_sem(-1);
-	//return (free_fct(&sophos, 0, ret));
-	return (1);
+	return (free_fct(&sophos, 0, ret));
 }
