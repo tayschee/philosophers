@@ -33,6 +33,7 @@ void			*sophos_is_alive(void *sophos_point)
 			return (NULL);
 		}
 		sem_post(g_safe[sophos->number - 1]);
+		usleep(1000);
 	}
 	return (NULL);
 }

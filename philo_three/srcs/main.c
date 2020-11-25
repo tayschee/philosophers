@@ -98,8 +98,6 @@ int				launch_thread(t_sophos *sophos)
 	i = -1;
 	j = 0;
 	g_save = sophos;
-	pthread_create(&tid, NULL, kill_everything, pid);
-	pthread_detach(tid);
 	gettimeofday(&g_begin, NULL);
 	while (++i < g_number_of_sophos)
 	{
@@ -107,6 +105,8 @@ int				launch_thread(t_sophos *sophos)
 			return (1);
 		sophos = sophos->next;
 	}
+	pthread_create(&tid, NULL, kill_everything, pid);
+	pthread_detach(tid);
 	while (j < g_number_of_sophos && waitpid(-1, &status, 0) &&
 	WEXITSTATUS(status) != 0)
 	{
